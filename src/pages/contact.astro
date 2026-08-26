@@ -1,0 +1,163 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../data/site.ts';
+
+const faqs = [
+  {
+    q: 'What does this cost us?',
+    a: 'Nothing. We own the machine, we pay for the product, and we cover service. Revenue comes from sales, which is why we care about getting the lineup right.',
+  },
+  {
+    q: 'How big does our site need to be?',
+    a: 'Smaller than most people assume. Shift patterns and how far the nearest shop is matter more than headcount. If it is genuinely too small, we will say so rather than put a machine in that will not earn.',
+  },
+  {
+    q: 'What do you need from us?',
+    a: 'A standard grounded outlet on a circuit that is not already loaded, and access to get the machine in. That is it. We check both at the site visit so there are no surprises on delivery day.',
+  },
+  {
+    q: 'How long does it take?',
+    a: 'Site visit within a few days of getting in touch, a written proposal after that, and install once you have approved it. Most sites are running inside a couple of weeks.',
+  },
+];
+---
+
+<Base
+  title="Contact"
+  description="Request a free site visit from Peak Vending. Tell us about your location and we will tell you what it would support."
+>
+  <section class="section section--tight">
+    <div class="wrap contact">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h1>Tell us about your space.</h1>
+        <p class="contact__sub">
+          Send the basics and we&rsquo;ll come look at it. If it&rsquo;s a fit, we&rsquo;ll tell
+          you what we&rsquo;d put in and when we could have it running. If it isn&rsquo;t,
+          we&rsquo;ll tell you that too.
+        </p>
+
+        <ul class="contact__direct">
+          <li>
+            <Icon name="mail" size={20} />
+            <div>
+              <span>Email</span>
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+            </div>
+          </li>
+          <li>
+            <Icon name="phone" size={20} />
+            <div>
+              <span>Phone</span>
+              <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+            </div>
+          </li>
+          <li>
+            <Icon name="pin" size={20} />
+            <div>
+              <span>Service area</span>
+              <strong>{site.areaServed}</strong>
+            </div>
+          </li>
+        </ul>
+        <p class="fine">{site.hours}. Enquiries outside those hours get picked up the next working day.</p>
+      </div>
+
+      <div class="contact__panel">
+        <h2 class="contact__panel-head">Request a site visit</h2>
+        <ContactForm variant="page" id="contact-page-form" />
+      </div>
+    </div>
+  </section>
+
+  <div class="ridge"></div>
+
+  <section class="section section--surface">
+    <div class="wrap faq">
+      <div>
+        <p class="eyebrow">Common questions</p>
+        <h2>The things people ask on the first call.</h2>
+      </div>
+      <div>
+        {faqs.map((item, i) => (
+          <details class="q" open={i === 0}>
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); align-items: start; }
+  .contact h1 { max-width: 14ch; margin-block: var(--sp-2) var(--sp-3); }
+  .contact__sub { color: var(--muted); font-size: var(--step-1); max-width: 46ch; }
+
+  .contact__direct {
+    list-style: none;
+    margin: var(--sp-5) 0 var(--sp-3);
+    padding: 0;
+    display: grid;
+    gap: var(--sp-3);
+  }
+  .contact__direct li { display: flex; gap: 0.875rem; align-items: flex-start; }
+  .contact__direct svg { width: 20px; height: 20px; color: var(--blue); flex: none; margin-top: 4px; }
+  .contact__direct span {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .contact__direct a, .contact__direct strong { font-size: var(--step-1); font-weight: 600; }
+  .contact__direct a { text-decoration: none; }
+  .contact__direct a:hover { text-decoration: underline; }
+
+  .contact__panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+  }
+  .contact__panel-head { font-size: var(--step-3); margin-bottom: var(--sp-3); }
+
+  .faq { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: var(--sp-6); align-items: start; }
+  .faq h2 { margin-top: var(--sp-2); max-width: 18ch; }
+
+  .q { border-bottom: 1px solid var(--line); }
+  .q summary {
+    list-style: none;
+    cursor: pointer;
+    padding-block: var(--sp-3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-1);
+  }
+  .q summary::-webkit-details-marker { display: none; }
+  .q summary::after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    flex: none;
+    border-right: 2.4px solid var(--blue);
+    border-bottom: 2.4px solid var(--blue);
+    transform: rotate(45deg) translateY(-3px);
+    transition: transform 0.22s ease;
+  }
+  .q[open] summary::after { transform: rotate(225deg) translateY(-3px); }
+  .q p { padding-bottom: var(--sp-3); color: var(--muted); max-width: 62ch; }
+
+  @media (max-width: 900px) {
+    .contact, .faq { grid-template-columns: 1fr; gap: var(--sp-4); }
+  }
+</style>

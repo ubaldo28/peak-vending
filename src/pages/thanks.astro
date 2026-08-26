@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+import { site } from '../data/site.ts';
+---
+
+<Base
+  title="Thanks — we got it"
+  description="Your enquiry has reached Peak Vending."
+  noindex
+>
+  <section class="section mid">
+    <div class="wrap">
+      <Logo variant="mark" width="88px" class="mid__mark" decorative />
+      <h1>Got it &mdash; thanks.</h1>
+      <p class="mid__sub">
+        Your enquiry is with us. Someone will be in touch within one working day
+        to arrange the site visit.
+      </p>
+      <p class="fine">
+        In a hurry? Call <a href={`tel:${site.phoneHref}`}>{site.phone}</a> and mention you filled in the form.
+      </p>
+      <div class="mid__actions">
+        <a href="/" class="btn">Back to the homepage</a>
+        <a href="/services/" class="btn btn--ghost">See what we handle</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .mid { text-align: center; padding-block: 7rem; }
+  .mid__mark { margin: 0 auto var(--sp-4); }
+  .mid h1 { max-width: 14ch; margin: 0 auto var(--sp-3); }
+  .mid__sub { color: var(--muted); font-size: var(--step-2); max-width: 46ch; margin: 0 auto var(--sp-3); }
+  .mid__actions { display: flex; gap: 0.875rem; justify-content: center; flex-wrap: wrap; margin-top: var(--sp-5); }
+</style>

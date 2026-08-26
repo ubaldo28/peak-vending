@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+---
+
+<Base title="Page not found" description="That page does not exist." noindex>
+  <section class="section mid">
+    <div class="wrap">
+      <Logo variant="mark" width="88px" class="mid__mark" decorative />
+      <p class="eyebrow">Error 404</p>
+      <h1>That page isn&rsquo;t here.</h1>
+      <p class="mid__sub">
+        The link may be old, or we may have moved something. Everything is
+        reachable from the homepage.
+      </p>
+      <div class="mid__actions">
+        <a href="/" class="btn">Back to the homepage</a>
+        <a href="/contact/" class="btn btn--ghost">Contact us</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .mid { text-align: center; padding-block: 7rem; }
+  .mid__mark { margin: 0 auto var(--sp-4); }
+  .mid h1 { max-width: 14ch; margin: var(--sp-2) auto var(--sp-3); }
+  .mid__sub { color: var(--muted); font-size: var(--step-2); max-width: 44ch; margin: 0 auto; }
+  .mid__actions { display: flex; gap: 0.875rem; justify-content: center; flex-wrap: wrap; margin-top: var(--sp-5); }
+</style>

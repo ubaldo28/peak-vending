@@ -1,0 +1,132 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../data/site.ts';
+import { getCollection } from 'astro:content';
+
+const locations = (await getCollection('locations')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const year = new Date().getFullYear();
+const socials = Object.entries(site.social).filter(([, url]) => url);
+---
+
+<footer class="foot">
+  <div class="wrap foot__grid">
+    <div>
+      <a href="/" aria-label="Peak Vending — home">
+        <Logo variant="full" width="158px" class="foot__logo" decorative />
+      </a>
+      <p class="foot__blurb">
+        Full-service snack and beverage vending. Machines placed, stocked, and
+        serviced at no cost to the location.
+      </p>
+      {socials.length > 0 && (
+        <ul class="foot__social">
+          {socials.map(([name, url]) => (
+            <li><a href={url} rel="noopener">{name}</a></li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+    <div>
+      <h2 class="foot__head">Company</h2>
+      <ul class="foot__list">
+        <li><a href="/about/">About</a></li>
+        <li><a href="/services/">Services</a></li>
+        <li><a href="/contact/">Request a machine</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="foot__head">Locations we serve</h2>
+      <ul class="foot__list">
+        {locations.slice(0, 5).map((loc) => (
+          <li><a href={`/locations/${loc.id}/`}>{loc.data.title}</a></li>
+        ))}
+        <li><a href="/locations/">See all</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="foot__head">Contact</h2>
+      <ul class="foot__list">
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><a href={`tel:${site.phoneHref}`}>{site.phone}</a></li>
+        <li class="foot__plain">{site.hours}</li>
+        <li class="foot__plain">Serving {site.areaServed}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap foot__bottom">
+    <span>&copy; {year} {site.legalName}. All rights reserved.</span>
+    <a href="/privacy/">Privacy</a>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    background: var(--ink);
+    color: #c8ccc5;
+    padding-block: 3.25rem 2.5rem;
+    --pv-blue: #5fa8dc;
+    --pv-dark: #f2f3f0;
+  }
+  .foot__grid {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr 1fr 1fr;
+    gap: var(--sp-5);
+  }
+  .foot__logo { margin-bottom: 0.9rem; }
+  .foot__blurb { font-size: 0.96875rem; color: #8c9189; max-width: 34ch; }
+  .foot__head {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    color: #8c9189;
+    margin-bottom: 0.8rem;
+  }
+  .foot__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.55rem;
+    font-size: 0.96875rem;
+  }
+  .foot__list a { color: #c8ccc5; text-decoration: none; }
+  .foot__list a:hover { color: #fff; text-decoration: underline; }
+  .foot__plain { color: #8c9189; }
+  .foot__social {
+    margin: var(--sp-3) 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    font-size: 0.90625rem;
+    text-transform: capitalize;
+  }
+  .foot__social a { color: #8c9189; }
+  .foot__bottom {
+    border-top: 1px solid #43473f;
+    margin-top: var(--sp-5);
+    padding-top: 1.25rem;
+    font-size: 0.875rem;
+    color: #7e837b;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .foot__bottom a { color: #7e837b; }
+
+  @media (max-width: 900px) {
+    .foot__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .foot__grid { grid-template-columns: 1fr; }
+  }
+</style>

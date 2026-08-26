@@ -1,0 +1,120 @@
+---
+import '@fontsource/barlow-semi-condensed/500.css';
+import '@fontsource/barlow-semi-condensed/600.css';
+import '@fontsource/barlow-semi-condensed/700.css';
+import '@fontsource/source-sans-3/400.css';
+import '@fontsource/source-sans-3/600.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/components.css';
+
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import LogoDefs from '../components/LogoDefs.astro';
+import { site } from '../data/site.ts';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Leave off to let the page inherit the site-wide OG image. */
+  image?: string;
+  noindex?: boolean;
+}
+
+const { title, description, image = '/og.png', noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://peak-vending.com').href;
+const ogImage = new URL(image, Astro.site ?? 'https://peak-vending.com').href;
+const fullTitle = title === site.name ? title : `${title} | ${site.name}`;
+
+/** LocalBusiness markup — this is what puts the phone number in search results. */
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: site.name,
+  url: Astro.site?.href ?? `https://${site.domain}`,
+  logo: new URL('/logo.svg', Astro.site ?? 'https://peak-vending.com').href,
+  description:
+    'Full-service snack and beverage vending. Machines placed, stocked, and serviced at no cost to the location.',
+  email: site.email,
+  telephone: site.phone,
+  areaServed: site.areaServed,
+  priceRange: 'Free placement',
+  ...(site.address.city
+    ? {
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: site.address.street,
+          addressLocality: site.address.city,
+          addressRegion: site.address.region,
+          postalCode: site.address.postalCode,
+          addressCountry: site.address.country,
+        },
+      }
+    : {}),
+  ...(Object.values(site.social).some(Boolean)
+    ? { sameAs: Object.values(site.social).filter(Boolean) }
+    : {}),
+};
+---
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#1C72AF" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script is:inline>
+      document.documentElement.classList.remove('no-js');
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <LogoDefs />
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Scroll reveal. Anything with .reveal fades in once, then stops being watched.
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const targets = document.querySelectorAll('.reveal');
+      if (reduced || !('IntersectionObserver' in window)) {
+        targets.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-in');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.06 },
+        );
+        targets.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

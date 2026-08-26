@@ -1,0 +1,175 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+import Machine from '../components/Machine.astro';
+import Icon from '../components/Icon.astro';
+import Sponsors from '../components/Sponsors.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { proofPoints } from '../data/site.ts';
+
+const services = (await getCollection('services'))
+  .filter((s) => s.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const locations = (await getCollection('locations')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="Peak Vending"
+  description="Full-service snack and beverage vending. We install, stock, and service the machines at no cost to your location."
+>
+  <section class="hero">
+    <div class="wrap">
+      <Logo variant="mark" width="132px" class="hero__mark" decorative />
+      <p class="eyebrow">Full-service vending</p>
+      <h1>Vending your team actually uses.</h1>
+      <p class="hero__sub">
+        We install, stock, and service the machines. Your only job is telling us
+        where to put them.
+      </p>
+      <div class="hero__actions">
+        <a href="/contact/" class="btn">See if you qualify</a>
+        <a href="#how" class="btn btn--ghost">How it works</a>
+      </div>
+      <p class="fine hero__fine">
+        Free site assessment &middot; No contracts to chase &middot; Locally owned and operated
+      </p>
+    </div>
+  </section>
+
+  <div class="ridge"></div>
+
+  <section class="strip">
+    <div class="wrap">
+      {proofPoints.map((point) => (
+        <div>
+          <b>{point.title}</b>
+          <span>{point.body}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="wrap">
+      <div class="lede reveal">
+        <p class="eyebrow">What we handle</p>
+        <h2>Everything past the plug.</h2>
+        <p>
+          A vending machine is only an amenity if somebody keeps it full and
+          working. That part is the whole job.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        {services.map((service) => (
+          <a class="card card--link reveal" href={`/services/#${service.id}`}>
+            <Icon name={service.data.icon} class="card__icon" size={38} />
+            <h3>{service.data.title}</h3>
+            <p>{service.data.summary}</p>
+            <span class="more">Read more <Icon name="arrow" size={15} /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="wrap">
+      <div class="lede reveal">
+        <p class="eyebrow">Where we place</p>
+        <h2>Built for buildings with people in them.</h2>
+      </div>
+      <div class="tiles reveal">
+        {locations.map((loc) => (
+          <a href={`/locations/${loc.id}/`} class="tile-link">
+            <b>{loc.data.title}</b>
+            <span>{loc.data.summary}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="split reveal">
+        <div class="figure"><Machine /></div>
+        <div>
+          <p class="eyebrow">Snack &amp; beverage</p>
+          <h3>Modern machines, not the one from 1998.</h3>
+          <p class="muted">
+            Glass-front units with drop sensors, so nothing gets stuck and charged
+            for. Card readers built in. Lit, quiet, and sized to the room.
+          </p>
+          <ul class="checks">
+            <li><Icon name="check" size={17} />Tap-to-pay, chip, and mobile wallets</li>
+            <li><Icon name="check" size={17} />Guaranteed-vend sensors with automatic refund</li>
+            <li><Icon name="check" size={17} />Energy-efficient LED and low-noise compressors</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="split reveal">
+        <div class="figure"><Machine /></div>
+        <div>
+          <p class="eyebrow">Your say in it</p>
+          <h3>You pick the lineup. We keep it honest.</h3>
+          <p class="muted">
+            Tell us what your people want in there and we build the planogram
+            around it. If something sits, it comes out &mdash; you don&rsquo;t have to
+            ask twice.
+          </p>
+          <ul class="checks">
+            <li><Icon name="check" size={17} />Healthier-option and allergen-aware selections</li>
+            <li><Icon name="check" size={17} />Local brands where you want them</li>
+            <li><Icon name="check" size={17} />Price points set with you, not sprung on you</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Sponsors variant="strip" />
+
+  <section class="section cta">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Get started</p>
+        <h2>Tell us about your space.</h2>
+        <p>
+          Send the basics and we&rsquo;ll come look at it. If it&rsquo;s a fit, we&rsquo;ll tell
+          you what we&rsquo;d put in and when we could have it running.
+        </p>
+      </div>
+      <ContactForm variant="panel" id="home-form" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    text-align: center;
+    padding-block: 6.5rem 5.25rem;
+    background: radial-gradient(120% 78% at 50% 0%, #ffffff 0%, var(--ground) 62%);
+  }
+  .hero__mark { margin: 0 auto var(--sp-4); }
+  .hero h1 { max-width: 16ch; margin: 0.875rem auto var(--sp-3); }
+  .hero__sub {
+    font-size: var(--step-2);
+    color: var(--muted);
+    max-width: 57ch;
+    margin: 0 auto var(--sp-5);
+  }
+  .hero__actions { display: flex; gap: 0.875rem; justify-content: center; flex-wrap: wrap; }
+  .hero__fine { margin-top: var(--sp-3); }
+
+  .tile-link { text-decoration: none; color: inherit; transition: background 0.16s ease; }
+  .tile-link:hover { background: var(--blue-tint); color: inherit; }
+  .tile-link:hover b { color: var(--blue); }
+
+  @media (max-width: 900px) {
+    .hero { padding-block: 3.5rem 3rem; }
+  }
+</style>

@@ -1,0 +1,223 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  /** 'panel' sits on the dark CTA band; 'page' is the full contact page form. */
+  variant?: 'panel' | 'page';
+  id?: string;
+}
+const { variant = 'page', id = 'contact-form' } = Astro.props;
+
+const locations = (await getCollection('locations')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<form
+  class:list={['form', `form--${variant}`]}
+  id={id}
+  method="POST"
+  action="/api/contact"
+  novalidate
+>
+  <!-- Bots fill this in. People never see it. -->
+  <div class="form__trap" aria-hidden="true">
+    <label for={`${id}-website`}>Company website</label>
+    <input id={`${id}-website`} name="company_website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <input type="hidden" name="t" value="0" data-stamp />
+
+  <div class="form__row">
+    <label for={`${id}-name`}>Your name</label>
+    <input id={`${id}-name`} name="name" type="text" autocomplete="name" required placeholder="First and last" />
+    <p class="form__err" data-err="name"></p>
+  </div>
+
+  <div class="form__row">
+    <label for={`${id}-business`}>Business or property</label>
+    <input id={`${id}-business`} name="business" type="text" autocomplete="organization" required placeholder="Acme Logistics" />
+    <p class="form__err" data-err="business"></p>
+  </div>
+
+  <div class="form__row">
+    <label for={`${id}-type`}>Location type</label>
+    <select id={`${id}-type`} name="locationType">
+      {locations.map((loc) => (
+        <option value={loc.data.title}>{loc.data.title}</option>
+      ))}
+      <option value="Something else">Something else</option>
+    </select>
+  </div>
+
+  <div class="form__row">
+    <label for={`${id}-email`}>Email</label>
+    <input id={`${id}-email`} name="email" type="email" autocomplete="email" required placeholder="you@company.com" />
+    <p class="form__err" data-err="email"></p>
+  </div>
+
+  {variant === 'page' && (
+    <div class="form__row">
+      <label for={`${id}-message`}>Anything we should know?</label>
+      <textarea id={`${id}-message`} name="message" rows="4" placeholder="Rough headcount, where you were thinking of putting it, anything unusual about the site."></textarea>
+    </div>
+  )}
+
+  <button class="btn btn--block" type="submit" data-submit>Request a site visit</button>
+
+  <p class="form__status" role="status" aria-live="polite" data-status></p>
+</form>
+
+<style>
+  .form { display: grid; gap: 0.85rem; }
+
+  .form__trap {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0);
+    white-space: nowrap; border: 0;
+  }
+
+  .form__row { display: grid; gap: 0.4rem; }
+
+  .form label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .form input,
+  .form select,
+  .form textarea {
+    width: 100%;
+    padding: 0.75rem 0.875rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+    font: inherit;
+    font-size: 1rem;
+  }
+  .form textarea { resize: vertical; min-height: 6rem; }
+  .form input::placeholder,
+  .form textarea::placeholder { color: var(--muted); opacity: 0.75; }
+
+  .form__err {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--error);
+    display: none;
+  }
+  .form__err.is-shown { display: block; }
+  .form [aria-invalid='true'] { border-color: var(--error); }
+
+  .form__status {
+    margin: 0;
+    font-size: 0.9375rem;
+    padding: 0.75rem 0.875rem;
+    border-radius: var(--radius-sm);
+    display: none;
+  }
+  .form__status.is-ok { display: block; background: var(--ok-bg); color: var(--ok); }
+  .form__status.is-bad { display: block; background: var(--error-bg); color: var(--error); }
+
+  /* On the dark CTA band the same markup flips to light-on-dark. */
+  .form--panel {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+  }
+  .form--panel label { color: #a9cde8; }
+  .form--panel input,
+  .form--panel select {
+    background: rgba(0, 0, 0, 0.18);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #fff;
+  }
+  .form--panel input::placeholder { color: #8fb4ce; opacity: 1; }
+  .form--panel .btn { background: #fff; color: var(--blue-deep); }
+  .form--panel .btn:hover { background: var(--blue-tint); color: var(--blue-deep); }
+  .form--panel .form__err { color: #ffc9c9; }
+  .form--panel .form__status.is-ok { background: rgba(255, 255, 255, 0.12); color: #fff; }
+  .form--panel .form__status.is-bad { background: rgba(255, 120, 120, 0.16); color: #ffd7d7; }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form.form').forEach((form) => {
+    // Stamp load time so the server can reject instant submissions.
+    const stamp = form.querySelector<HTMLInputElement>('[data-stamp]');
+    if (stamp) stamp.value = String(Date.now());
+
+    const status = form.querySelector<HTMLElement>('[data-status]');
+    const button = form.querySelector<HTMLButtonElement>('[data-submit]');
+    const original = button?.textContent ?? 'Send';
+
+    const clearErrors = () => {
+      form.querySelectorAll<HTMLElement>('[data-err]').forEach((el) => {
+        el.textContent = '';
+        el.classList.remove('is-shown');
+      });
+      form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+    };
+
+    const showErrors = (errors: Record<string, string>) => {
+      Object.entries(errors).forEach(([field, message]) => {
+        const slot = form.querySelector<HTMLElement>(`[data-err="${field}"]`);
+        const input = form.querySelector<HTMLElement>(`[name="${field}"]`);
+        if (slot) {
+          slot.textContent = message;
+          slot.classList.add('is-shown');
+        }
+        input?.setAttribute('aria-invalid', 'true');
+      });
+      form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+    };
+
+    const setStatus = (message: string, ok: boolean) => {
+      if (!status) return;
+      status.textContent = message;
+      status.classList.toggle('is-ok', ok);
+      status.classList.toggle('is-bad', !ok);
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      clearErrors();
+      setStatus('', true);
+      status?.classList.remove('is-ok', 'is-bad');
+
+      const payload = Object.fromEntries(new FormData(form).entries());
+
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Sending…';
+      }
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const body = await res.json().catch(() => ({}));
+
+        if (res.ok && body.ok) {
+          form.reset();
+          if (stamp) stamp.value = String(Date.now());
+          setStatus(body.message ?? 'Thanks — we will be in touch shortly.', true);
+        } else {
+          if (body.errors) showErrors(body.errors);
+          setStatus(body.message ?? 'Something went wrong. Please try again.', false);
+        }
+      } catch {
+        setStatus('We could not reach the server. Check your connection and try again.', false);
+      } finally {
+        if (button) {
+          button.disabled = false;
+          button.textContent = original;
+        }
+      }
+    });
+  });
+</script>

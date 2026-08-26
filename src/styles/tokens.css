@@ -1,0 +1,67 @@
+/* ============================================================
+   Peak Vending — "Summit" design tokens
+   Every colour, size and space value on the site starts here.
+   ============================================================ */
+
+:root {
+  /* --- Brand ------------------------------------------------ */
+  --blue: #1c72af;          /* straight off the logo */
+  --blue-deep: #14588a;
+  --blue-tint: #e8f1f8;
+  --ink: #2e322d;           /* the logo charcoal, deepened for body text */
+  --ink-soft: #4a4f47;
+
+  /* --- Neutrals (warm-biased, not flat grey) ---------------- */
+  --ground: #f7f8f6;
+  --surface: #ffffff;
+  --sand: #e4ded2;
+  --sand-soft: #f0ece3;
+  --line: #dedfd9;
+  --line-strong: #c9cbc3;
+  --muted: #6b7169;
+
+  /* --- Semantic --------------------------------------------- */
+  --ok: #2f7d4f;
+  --ok-bg: #e8f4ec;
+  --warn: #9a6b12;
+  --error: #a83232;
+  --error-bg: #fbecec;
+
+  /* --- Logo (consumed by the Logo component) ---------------- */
+  --pv-blue: var(--blue);
+  --pv-dark: var(--ink);
+
+  /* --- Type ------------------------------------------------- */
+  --font-display: 'Barlow Semi Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --font-body: 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --step--1: 0.9375rem;   /* 15px  fine print */
+  --step-0: 1.0625rem;    /* 17px  body */
+  --step-1: 1.125rem;     /* 18px  lead-in */
+  --step-2: 1.25rem;      /* 20px  hero sub */
+  --step-3: clamp(1.4rem, 1.2rem + 0.7vw, 1.9rem);    /* h3 */
+  --step-4: clamp(2rem, 1.6rem + 1.7vw, 2.875rem);    /* h2 */
+  --step-5: clamp(2.75rem, 2rem + 3.4vw, 5rem);       /* h1 */
+
+  /* --- Space ------------------------------------------------ */
+  --sp-1: 0.375rem;
+  --sp-2: 0.75rem;
+  --sp-3: 1.125rem;
+  --sp-4: 1.75rem;
+  --sp-5: 2.75rem;
+  --sp-6: 4rem;
+  --section: 6rem;
+
+  /* --- Shape ------------------------------------------------ */
+  --radius: 8px;
+  --radius-sm: 4px;
+  --container: 1140px;
+  --shadow: 0 18px 40px -26px rgba(46, 50, 45, 0.45);
+}
+
+@media (max-width: 900px) {
+  :root {
+    --section: 4rem;
+    --step-0: 1rem;
+  }
+}

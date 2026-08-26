@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site.ts';
+
+// DRAFT. This covers what the site actually does today — a contact form and
+// nothing else. Have it reviewed before launch, and update it the moment you
+// add analytics, advertising pixels, or any third-party embed.
+const updated = 'August 2026';
+---
+
+<Base
+  title="Privacy"
+  description="How Peak Vending handles the information you send through this website."
+>
+  <section class="section legal">
+    <div class="wrap">
+      <p class="eyebrow">Privacy</p>
+      <h1>What we do with your details.</h1>
+      <p class="legal__meta">Last updated {updated}</p>
+
+      <h2>What this site collects</h2>
+      <p>
+        The only information this website collects is what you type into the
+        contact form: your name, your email address, the business or property
+        you are enquiring about, the location type you select, and anything you
+        write in the message box.
+      </p>
+
+      <h2>Why we collect it</h2>
+      <p>
+        To reply to your enquiry and, if it goes further, to arrange a site
+        visit. We do not sell it, rent it, or pass it to anyone outside the
+        people at {site.legalName} who need it to answer you.
+      </p>
+
+      <h2>How it reaches us</h2>
+      <p>
+        Form submissions are delivered to us by email through a third-party
+        email provider, and the site is hosted on a content delivery network.
+        Both handle the submission in transit; neither uses it for their own
+        purposes.
+      </p>
+
+      <h2>Cookies and tracking</h2>
+      <p>
+        This site sets no cookies and runs no advertising or analytics trackers.
+        If that changes, this page will be updated first.
+      </p>
+
+      <h2>How long we keep it</h2>
+      <p>
+        Enquiries stay in our email for as long as the conversation is useful.
+        If you would like yours deleted, ask and we will remove it.
+      </p>
+
+      <h2>Getting in touch about your data</h2>
+      <p>
+        Email <a href={`mailto:${site.email}`}>{site.email}</a> or call
+        <a href={`tel:${site.phoneHref}`}>{site.phone}</a> and we will deal with
+        it directly.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal .wrap { max-width: 68ch; }
+  .legal h1 { max-width: 16ch; margin-block: var(--sp-2) 0.5rem; }
+  .legal__meta { color: var(--muted); font-size: 0.9375rem; margin-bottom: var(--sp-5); }
+  .legal h2 { font-size: var(--step-3); margin-top: var(--sp-5); margin-bottom: var(--sp-2); }
+  .legal p { color: var(--muted); }
+</style>

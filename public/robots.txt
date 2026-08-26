@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://peak-vending.com/sitemap-index.xml

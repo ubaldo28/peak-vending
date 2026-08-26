@@ -1,0 +1,180 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+import Icon from '../components/Icon.astro';
+import Sponsors from '../components/Sponsors.astro';
+import { site } from '../data/site.ts';
+
+const steps = [
+  {
+    title: 'You get in touch',
+    body: 'Address, building type, and roughly how many people are in it. That is everything we need to start.',
+  },
+  {
+    title: 'We visit the site',
+    body: 'We walk the space, check the power, and work out where the foot traffic actually goes.',
+  },
+  {
+    title: 'You approve the plan',
+    body: 'Machine type, product lineup, and pricing, written down before anything is ordered.',
+  },
+  {
+    title: 'We install and take over',
+    body: 'Delivery, placement, stocking, and every visit after that. You get a name and a number.',
+  },
+];
+
+const principles = [
+  {
+    icon: 'shield',
+    title: 'The location never pays',
+    body: 'No purchase, no lease, no maintenance contract, no minimum. We carry the equipment cost because we think the machine should have to earn its place.',
+  },
+  {
+    icon: 'wrench',
+    title: 'One number, and it is ours',
+    body: 'Your maintenance team should never have to open a vending machine. There is a sticker on every unit and it rings us, not a manufacturer.',
+  },
+  {
+    icon: 'chart',
+    title: 'If it does not sell, it goes',
+    body: 'A machine nobody uses is worse than no machine. If a site is not moving product after a fair run, we will tell you and take it out.',
+  },
+];
+---
+
+<Base
+  title="About"
+  description="Peak Vending is a locally owned, full-service vending operator. We place, stock, and service machines at no cost to the location."
+>
+  <section class="section section--tight head">
+    <div class="wrap">
+      <Logo variant="mark" width="96px" class="head__mark" decorative />
+      <p class="eyebrow">About Peak Vending</p>
+      <h1>A vending company that shows up.</h1>
+      <p class="head__sub">
+        Most vending complaints are not about the machine. They are about the
+        weeks it sat empty, or the call nobody returned. We built the business
+        around fixing that, which is a low bar and a surprisingly rare one.
+      </p>
+    </div>
+  </section>
+
+  <div class="ridge"></div>
+
+  <section class="section">
+    <div class="wrap story">
+      <div class="reveal">
+        <p class="eyebrow">Why we exist</p>
+        <h2>Vending is a service business wearing a hardware costume.</h2>
+      </div>
+      <div class="story__body reveal">
+        <p>
+          Anyone can put a machine in a room. The difference between an amenity
+          people appreciate and a piece of furniture people complain about is
+          entirely in what happens after the install &mdash; whether it gets restocked
+          on a schedule, whether the lineup reflects what your people actually
+          buy, and whether a fault gets fixed this week or next month.
+        </p>
+        <p>
+          That is the part we are set up for. We run routes rather than
+          call-outs, we share the sales numbers with the sites we serve, and we
+          would rather pull a machine from a location that is not working than
+          leave it there earning nothing and irritating everybody.
+        </p>
+        <p>
+          We are locally owned and we intend to stay that way. It means we take
+          on sites we can genuinely get to, and it means the person who quotes
+          you is the person you will still be dealing with a year later.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="wrap">
+      <div class="lede reveal">
+        <p class="eyebrow">How we work</p>
+        <h2>Three things we will not budge on.</h2>
+      </div>
+      <div class="grid-3">
+        {principles.map((item) => (
+          <div class="card reveal">
+            <Icon name={item.icon} class="card__icon" size={38} />
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="lede reveal">
+        <p class="eyebrow">Getting started</p>
+        <h2>Four steps, and none of them are yours.</h2>
+      </div>
+      <ol class="steps">
+        {steps.map((step, i) => (
+          <li class="reveal">
+            <span class="steps__n">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <Sponsors variant="feature" heading="The businesses that back us" />
+
+  <section class="section cta">
+    <div class="wrap cta__simple">
+      <div>
+        <p class="eyebrow">Talk to us</p>
+        <h2>Serving {site.areaServed}.</h2>
+        <p>Call {site.phone} or send the details and we will come and look.</p>
+      </div>
+      <a href="/contact/" class="btn btn--light">Request a site visit</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head__mark { margin-bottom: var(--sp-4); }
+  .head h1 { max-width: 16ch; margin-block: var(--sp-2) var(--sp-3); }
+  .head__sub { color: var(--muted); font-size: var(--step-1); max-width: 58ch; }
+
+  .story { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: var(--sp-6); align-items: start; }
+  .story h2 { margin-top: var(--sp-2); max-width: 18ch; }
+  .story__body { color: var(--muted); }
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sp-4);
+  }
+  .steps li { border-top: 2px solid var(--line); padding-top: var(--sp-3); }
+  .steps__n {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.8125rem;
+    letter-spacing: 0.16em;
+    color: var(--blue);
+    margin-bottom: 0.6rem;
+  }
+  .steps h3 { font-size: var(--step-1); margin-bottom: 0.5rem; }
+  .steps p { color: var(--muted); font-size: 0.96875rem; }
+
+  .cta__simple { grid-template-columns: 1fr auto; align-items: center; }
+
+  @media (max-width: 900px) {
+    .story, .steps { grid-template-columns: 1fr; }
+    .cta__simple { grid-template-columns: 1fr; }
+  }
+</style>

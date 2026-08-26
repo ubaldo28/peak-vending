@@ -1,0 +1,12 @@
+[
+  {
+    "id": "example-sponsor",
+    "name": "Example Sponsor",
+    "logo": "/sponsors/example.svg",
+    "url": "https://example.com",
+    "tier": "strip",
+    "blurb": "One sentence about the sponsor, shown only on feature cards.",
+    "order": 10,
+    "active": false
+  }
+]

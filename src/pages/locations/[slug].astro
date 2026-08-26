@@ -1,0 +1,137 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import Machine from '../../components/Machine.astro';
+import ContactForm from '../../components/ContactForm.astro';
+
+export const getStaticPaths = (async () => {
+  const locations = await getCollection('locations');
+  return locations.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { title, heading, summary, metaDescription, points, stock } = entry.data;
+
+const all = (await getCollection('locations')).sort((a, b) => a.data.order - b.data.order);
+const others = all.filter((l) => l.id !== entry.id).slice(0, 3);
+
+const plainTitle = title;
+---
+
+<Base title={heading ?? plainTitle} description={metaDescription}>
+  <section class="section section--tight head">
+    <div class="wrap head__in">
+      <div>
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/locations/">Locations we serve</a>
+          <span aria-hidden="true">/</span>
+          <span>{title}</span>
+        </nav>
+        <h1>{heading ?? title}</h1>
+        <p class="head__sub">{summary}</p>
+        <a href="/contact/" class="btn">Request a site visit</a>
+      </div>
+      <div class="figure head__figure"><Machine /></div>
+    </div>
+  </section>
+
+  <div class="ridge"></div>
+
+  <section class="section">
+    <div class="wrap cols">
+      <div class="reveal">
+        <p class="eyebrow">What we see on these sites</p>
+        <h2>The situations a machine actually solves.</h2>
+        <ul class="checks cols__list">
+          {points.map((point) => (
+            <li><Icon name="check" size={17} />{point}</li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="reveal">
+        <p class="eyebrow">What we stock here</p>
+        <h2>Built for this kind of building.</h2>
+        <ul class="tags">
+          {stock.map((item) => <li>{item}</li>)}
+        </ul>
+        <p class="muted tags__note">
+          This is a starting point, not a fixed list. The lineup gets agreed with
+          you before launch and corrected as the sales data comes back.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--surface">
+    <div class="wrap">
+      <div class="lede">
+        <p class="eyebrow">Other locations</p>
+        <h2>We also serve these.</h2>
+      </div>
+      <div class="grid-3">
+        {others.map((other) => (
+          <a href={`/locations/${other.id}/`} class="card card--link">
+            <h3>{other.data.title}</h3>
+            <p>{other.data.summary}</p>
+            <span class="more">Read more <Icon name="arrow" size={15} /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Get started</p>
+        <h2>Vending for your {plainTitle.toLowerCase()}.</h2>
+        <p>
+          Send us the address and rough headcount. We will come out, look at the
+          space, and tell you straight whether it is worth a machine.
+        </p>
+      </div>
+      <ContactForm variant="panel" id={`loc-form-${entry.id}`} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head__in { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--sp-6); align-items: center; }
+  .head h1 { max-width: 17ch; margin-block: var(--sp-2) var(--sp-3); }
+  .head__sub { color: var(--muted); font-size: var(--step-1); max-width: 48ch; margin-bottom: var(--sp-4); }
+  .head__figure { aspect-ratio: 4 / 3; }
+
+  .crumbs {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .crumbs a { color: var(--muted); text-decoration: none; }
+  .crumbs a:hover { color: var(--blue); text-decoration: underline; }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6); align-items: start; }
+  .cols h2 { font-size: var(--step-3); margin-block: var(--sp-2) var(--sp-3); max-width: 22ch; }
+  .cols__list { font-size: 1rem; }
+
+  .tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tags li {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.90625rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tags__note { margin-top: var(--sp-3); font-size: 0.9375rem; }
+
+  @media (max-width: 900px) {
+    .head__in, .cols { grid-template-columns: 1fr; gap: var(--sp-4); }
+    .head__figure { display: none; }
+  }
+</style>

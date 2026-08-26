@@ -1,0 +1,116 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  /** 'strip' = thin logo band. 'feature' = cards with a blurb. */
+  variant?: 'strip' | 'feature';
+  heading?: string;
+}
+const { variant = 'strip', heading = 'Proudly supported by' } = Astro.props;
+
+const all = (await getCollection('sponsors'))
+  .filter((s) => s.data.active)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const items = variant === 'feature' ? all.filter((s) => s.data.tier === 'feature') : all;
+---
+
+{
+  items.length > 0 && (
+    <section class:list={['sponsors', `sponsors--${variant}`]} aria-labelledby="sponsors-head">
+      <div class="wrap">
+        <h2 id="sponsors-head" class="sponsors__head">{heading}</h2>
+
+        {variant === 'strip' ? (
+          <ul class="sponsors__row">
+            {items.map((s) => (
+              <li>
+                {s.data.url ? (
+                  <a href={s.data.url} rel="noopener sponsored" title={s.data.name}>
+                    <img src={s.data.logo} alt={s.data.name} loading="lazy" decoding="async" />
+                  </a>
+                ) : (
+                  <img src={s.data.logo} alt={s.data.name} loading="lazy" decoding="async" />
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <ul class="sponsors__cards">
+            {items.map((s) => (
+              <li class="card">
+                <img src={s.data.logo} alt={s.data.name} loading="lazy" decoding="async" />
+                <h3>{s.data.name}</h3>
+                {s.data.blurb && <p>{s.data.blurb}</p>}
+                {s.data.url && (
+                  <a href={s.data.url} rel="noopener sponsored" class="more">Visit {s.data.name}</a>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .sponsors {
+    background: var(--surface);
+    border-block: 1px solid var(--line);
+    padding-block: var(--sp-5);
+  }
+  .sponsors--feature { padding-block: var(--section); }
+
+  .sponsors__head {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: var(--sp-4);
+  }
+  .sponsors--feature .sponsors__head {
+    font-size: var(--step-4);
+    letter-spacing: -0.005em;
+    text-transform: none;
+    color: var(--ink);
+    margin-bottom: var(--sp-5);
+  }
+
+  .sponsors__row {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-5);
+  }
+  .sponsors__row img {
+    max-height: 42px;
+    width: auto;
+    /* Desaturated so third-party brand colours never fight the page. */
+    filter: grayscale(1);
+    opacity: 0.62;
+    transition: filter 0.2s ease, opacity 0.2s ease;
+  }
+  .sponsors__row a:hover img,
+  .sponsors__row a:focus-visible img { filter: none; opacity: 1; }
+
+  .sponsors__cards {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-4);
+  }
+  .sponsors__cards img { max-height: 46px; width: auto; margin-bottom: var(--sp-3); }
+  @media (max-width: 900px) {
+    .sponsors__cards { grid-template-columns: 1fr; }
+  }
+</style>

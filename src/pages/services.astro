@@ -1,0 +1,113 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Machine from '../components/Machine.astro';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const rendered = await Promise.all(
+  services.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+);
+---
+
+<Base
+  title="Services"
+  description="What Peak Vending handles: placement and install, stocking and rotation, service and repair, cashless payments, sales reporting, and micro markets."
+>
+  <section class="section section--tight page-head">
+    <div class="wrap">
+      <p class="eyebrow">Services</p>
+      <h1>Everything past the plug.</h1>
+      <p class="page-head__sub">
+        We own the machine, the product, and the upkeep. Below is the whole scope,
+        in plain terms, so you know exactly what lands on you. Nothing does.
+      </p>
+      <nav class="jump" aria-label="Services on this page">
+        {services.map((s) => (
+          <a href={`#${s.id}`}>{s.data.title}</a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <div class="ridge"></div>
+
+  {rendered.map(({ entry, Content }, index) => (
+    <section class:list={['section', 'service', index % 2 === 1 && 'service--alt']} id={entry.id}>
+      <div class="wrap split">
+        <div class="figure">
+          <Machine />
+        </div>
+        <div>
+          <p class="eyebrow">
+            <Icon name={entry.data.icon} size={18} />
+            Service {String(index + 1).padStart(2, '0')}
+          </p>
+          <h2>{entry.data.title}</h2>
+          <div class="prose"><Content /></div>
+          {entry.data.bullets.length > 0 && (
+            <ul class="checks">
+              {entry.data.bullets.map((b) => (
+                <li><Icon name="check" size={17} />{b}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="section cta">
+    <div class="wrap cta__simple">
+      <div>
+        <p class="eyebrow">Next step</p>
+        <h2>Not sure which of these you need?</h2>
+        <p>That is what the site visit is for. We will tell you what the space supports.</p>
+      </div>
+      <a href="/contact/" class="btn btn--light">Request a site visit</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head h1 { max-width: 18ch; margin-block: var(--sp-2) var(--sp-3); }
+  .page-head__sub { color: var(--muted); font-size: var(--step-1); max-width: 58ch; }
+
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: var(--sp-4);
+  }
+  .jump a {
+    text-decoration: none;
+    font-size: 0.90625rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+  }
+  .jump a:hover { border-color: var(--blue); color: var(--blue); }
+
+  .service { scroll-margin-top: 6rem; }
+  .service--alt { background: var(--surface); border-block: 1px solid var(--line); }
+  .service .eyebrow { display: flex; align-items: center; gap: 0.5rem; }
+  .service h2 { margin-block: var(--sp-2) var(--sp-3); max-width: 20ch; }
+
+  .prose { color: var(--muted); margin-bottom: var(--sp-3); }
+  .prose :global(p + p) { margin-top: var(--sp-3); }
+
+  /* Alternate which side the illustration sits on. */
+  .service--alt .split .figure { order: 1; }
+
+  .cta__simple {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .cta__simple { grid-template-columns: 1fr; }
+    .service--alt .split .figure { order: 0; }
+  }
+</style>

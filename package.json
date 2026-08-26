@@ -1,0 +1,29 @@
+{
+  "name": "peak-vending",
+  "version": "1.0.0",
+  "description": "Peak Vending marketing site \u2014 Astro, deployed to Cloudflare Workers.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "wrangler dev",
+    "deploy": "astro build && wrangler deploy --config dist/server/wrangler.json",
+    "check": "astro check",
+    "astro": "astro"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@astrojs/cloudflare": "^14.2.5",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource/barlow-semi-condensed": "^5.3.0",
+    "@fontsource/source-sans-3": "^5.3.0",
+    "astro": "^7.2.8"
+  },
+  "devDependencies": {
+    "wrangler": "^4.126.0"
+  },
+  "private": true,
+  "type": "module"
+}
