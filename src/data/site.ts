@@ -11,18 +11,27 @@ export const site = {
 
   // --- CONTACT -------------------------------------------------------------
   email: 'hello@peak-vending.com',
-  phone: '(000) 000-0000',
-  phoneHref: '+10000000000',
+  // Leave these empty and the phone disappears from the nav, footer, contact
+  // page, thanks page and the structured data. Fill them in to bring it back.
+  phone: '',
+  phoneHref: '',
 
   // --- SERVICE AREA --------------------------------------------------------
-  // Used in the footer and in the LocalBusiness structured data.
-  areaServed: 'Your metro area',
+  /** Short form, used in running copy. */
+  areaServed: 'Dundee, Angus, Fife and Perthshire',
+  /** Used in the LocalBusiness structured data and the coverage list. */
+  areas: [
+    { name: 'Dundee', blurb: 'City centre, the Technology Park, and the industrial estates out toward Camperdown.' },
+    { name: 'Angus', blurb: 'Arbroath, Forfar, Montrose, Brechin and the estates in between.' },
+    { name: 'Fife', blurb: 'Glenrothes, Kirkcaldy, Dunfermline, Cupar and the east Neuk towns.' },
+    { name: 'Perth & Kinross', blurb: 'Perth, Scone, Blairgowrie, Crieff and the surrounding parks.' },
+  ],
   address: {
     street: '',
-    city: '',
-    region: '',
+    city: 'Dundee',
+    region: 'Scotland',
     postalCode: '',
-    country: 'US',
+    country: 'GB',
   },
 
   // --- SOCIAL (leave blank to hide) ---------------------------------------
@@ -37,15 +46,15 @@ export const site = {
 
 export const nav = [
   { href: '/services/', label: 'Services' },
-  { href: '/locations/', label: 'Locations we serve' },
+  { href: '/locations/', label: 'Where we install' },
   { href: '/about/', label: 'About' },
   { href: '/contact/', label: 'Contact' },
 ] as const;
 
 /** Short trust points shown in the strip under the homepage hero. */
 export const proofPoints = [
-  { title: 'No cost to the location', body: 'Machines, install, and stocking on us' },
-  { title: 'Tap, swipe, or cash', body: 'Card readers standard on every unit' },
-  { title: 'Restocked on a route', body: 'Regular visits, not on-request' },
-  { title: 'One number to call', body: 'Same person every time' },
+  { title: 'Nothing for you to pay', body: 'Machines, delivery and stocking are on us' },
+  { title: 'Contactless as standard', body: 'Card and phone on every machine' },
+  { title: 'Filled on a set run', body: 'A regular visit, not when you chase us' },
+  { title: 'One number to ring', body: 'The same folk every time' },
 ] as const;

@@ -1,16 +1,16 @@
 ---
 title: "Placement & install"
-summary: "We measure the space, handle delivery, and set the machine up on the right circuit. Nothing gets left for your maintenance crew."
+summary: "We measure up, bring the machine, and get it plugged in. Nothing left for your maintenance team."
 icon: layers
 order: 10
 featured: true
 bullets:
-  - "Site survey before anything is ordered"
-  - "Delivery, placement, and levelling"
-  - "Power checked against the existing load"
-  - "Signage with one number to call"
+  - "A walk round the site before anything is ordered"
+  - "Delivery, positioning and levelling"
+  - "Power checked against what the circuit is already carrying"
+  - "A sticker on the machine with one number on it"
 ---
 
-A machine in the wrong spot earns nothing and annoys everybody. We walk the building first and put it where people already stop moving — by the time clock, outside the break room, next to the lift lobby.
+A machine in the wrong spot earns nothing and annoys everybody. We walk the building first and put it where folk already stop moving — by the clocking-in point, outside the staff room, next to the lift.
 
-Delivery, placement and setup are ours. Your maintenance team does not need to be there, and nothing is left leaning against a wall for somebody else to deal with.
+Delivery, positioning and setup are ours. Nobody from your side needs to be standing about for it, and we do not leave packaging propped against a wall for someone else to shift.

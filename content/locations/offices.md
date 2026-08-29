@@ -1,17 +1,17 @@
 ---
 title: "Offices & business parks"
 heading: "Vending for offices and business parks"
-summary: "Break rooms, lobbies, and shared floors in multi-tenant buildings."
-metaDescription: "Free-placement snack and drink vending for offices and business parks. We install, stock, and service the machines at no cost to the building."
+summary: "Staff rooms, receptions and shared floors in multi-tenant buildings."
+metaDescription: "Free-placement snack and drink machines for offices and business parks across Dundee, Angus, Fife and Perthshire. Installed, filled and serviced at no cost to the building."
 order: 10
 points:
-  - "Shared floors in multi-tenant buildings where no single tenant wants to own the amenity"
-  - "Lobbies and reception areas that need something for visitors"
-  - "Teams working past the point where the nearest cafe has closed"
-  - "Meeting-heavy floors where people cannot leave the building for long"
+  - "Shared floors in multi-tenant buildings where no one tenant wants to run the tea trolley"
+  - "Receptions and waiting areas that need something for visitors"
+  - "Folk working on past the point where the nearest café has shut"
+  - "Meeting-heavy floors where nobody can nip out for long"
 stock:
   - "Coffee and cold brew"
-  - "Sparkling and still water"
+  - "Still and sparkling water"
   - "Lower-sugar snacks"
-  - "Standard confectionery"
+  - "The usual chocolate and crisps"
 ---

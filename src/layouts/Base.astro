@@ -35,10 +35,10 @@ const jsonLd = {
   url: Astro.site?.href ?? `https://${site.domain}`,
   logo: new URL('/logo.svg', Astro.site ?? 'https://peak-vending.com').href,
   description:
-    'Full-service snack and beverage vending. Machines placed, stocked, and serviced at no cost to the location.',
+    'Full-service snack and drink vending across Dundee, Angus, Fife and Perthshire. Machines installed, filled and maintained at no cost to the site.',
   email: site.email,
-  telephone: site.phone,
-  areaServed: site.areaServed,
+  ...(site.phone ? { telephone: site.phone } : {}),
+  areaServed: site.areas.map((a) => ({ '@type': 'AdministrativeArea', name: a.name })),
   priceRange: 'Free placement',
   ...(site.address.city
     ? {
@@ -59,7 +59,7 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="en-GB" class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

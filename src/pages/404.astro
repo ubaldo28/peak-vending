@@ -1,16 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
-import Logo from '../components/Logo.astro';
 ---
 
 <Base title="Page not found" description="That page does not exist." noindex>
   <section class="section mid">
     <div class="wrap">
-      <Logo variant="mark" width="88px" class="mid__mark" decorative />
+      <div class="mid__rule" aria-hidden="true"></div>
       <p class="eyebrow">Error 404</p>
       <h1>That page isn&rsquo;t here.</h1>
       <p class="mid__sub">
-        The link may be old, or we may have moved something. Everything is
+        The link might be out of date, or we&rsquo;ve moved something. Everything is
         reachable from the homepage.
       </p>
       <div class="mid__actions">
@@ -23,7 +22,13 @@ import Logo from '../components/Logo.astro';
 
 <style>
   .mid { text-align: center; padding-block: 7rem; }
-  .mid__mark { margin: 0 auto var(--sp-4); }
+  .mid__rule {
+    width: 120px;
+    height: 14px;
+    margin: 0 auto var(--sp-4);
+    opacity: 0.5;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cpath d='M0 12L20 3l20 9' fill='none' stroke='%231C72AF' stroke-width='2.4' stroke-linecap='square'/%3E%3C/svg%3E") repeat-x center / 40px 14px;
+  }
   .mid h1 { max-width: 14ch; margin: var(--sp-2) auto var(--sp-3); }
   .mid__sub { color: var(--muted); font-size: var(--step-2); max-width: 44ch; margin: 0 auto; }
   .mid__actions { display: flex; gap: 0.875rem; justify-content: center; flex-wrap: wrap; margin-top: var(--sp-5); }

@@ -17,8 +17,8 @@ const socials = Object.entries(site.social).filter(([, url]) => url);
         <Logo variant="full" width="158px" class="foot__logo" decorative />
       </a>
       <p class="foot__blurb">
-        Full-service snack and beverage vending. Machines placed, stocked, and
-        serviced at no cost to the location.
+        Full-service snack and drink vending across Dundee, Angus, Fife and
+        Perthshire. Installed, filled and maintained at no cost to the site.
       </p>
       {socials.length > 0 && (
         <ul class="foot__social">
@@ -34,12 +34,12 @@ const socials = Object.entries(site.social).filter(([, url]) => url);
       <ul class="foot__list">
         <li><a href="/about/">About</a></li>
         <li><a href="/services/">Services</a></li>
-        <li><a href="/contact/">Request a machine</a></li>
+        <li><a href="/contact/">Get a machine</a></li>
       </ul>
     </div>
 
     <div>
-      <h2 class="foot__head">Locations we serve</h2>
+      <h2 class="foot__head">Where we install</h2>
       <ul class="foot__list">
         {locations.slice(0, 5).map((loc) => (
           <li><a href={`/locations/${loc.id}/`}>{loc.data.title}</a></li>
@@ -52,9 +52,9 @@ const socials = Object.entries(site.social).filter(([, url]) => url);
       <h2 class="foot__head">Contact</h2>
       <ul class="foot__list">
         <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-        <li><a href={`tel:${site.phoneHref}`}>{site.phone}</a></li>
+        {site.phone && <li><a href={`tel:${site.phoneHref}`}>{site.phone}</a></li>}
         <li class="foot__plain">{site.hours}</li>
-        <li class="foot__plain">Serving {site.areaServed}</li>
+        <li class="foot__plain">Covering {site.areaServed}</li>
       </ul>
     </div>
   </div>

@@ -9,15 +9,15 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
 
 <Base
   title="Locations we serve"
-  description="Peak Vending places and services machines in offices, warehouses, manufacturing sites, gyms, apartment communities, and care facilities."
+  description="Peak Vending installs and maintains machines in offices, warehouses, factories, gyms, flats and care homes across Dundee, Angus, Fife and Perthshire."
 >
   <section class="section section--tight page-head">
     <div class="wrap">
-      <p class="eyebrow">Locations we serve</p>
-      <h1>If your people can&rsquo;t easily leave, we should be there.</h1>
+      <p class="eyebrow">Where we install</p>
+      <h1>If your folk can&rsquo;t easily nip out, we should be there.</h1>
       <p class="page-head__sub">
-        Every site is different, and the product mix that works in a warehouse
-        will die in a gym. Pick the one closest to yours to see how we approach it.
+        Every site is different, and a range that works in a warehouse will die
+        in a gym. Pick whichever is closest to yours and see how we go about it.
       </p>
     </div>
   </section>
@@ -32,6 +32,14 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
             <span class="more">What we do here <Icon name="arrow" size={15} /></span>
           </a>
         ))}
+        <a href="/contact/" class="card card--link card--cta reveal">
+          <h2 class="loc__title">Something else?</h2>
+          <p>
+            This is not an exhaustive list. If folk are stuck on your site for a
+            shift, there is usually a case for a machine.
+          </p>
+          <span class="more">Ask us <Icon name="arrow" size={15} /></span>
+        </a>
       </div>
     </div>
   </section>
@@ -40,20 +48,20 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
     <div class="wrap area">
       <div>
         <p class="eyebrow">Service area</p>
-        <h2>We run routes across {site.areaServed}.</h2>
+        <h2>We run set routes across {site.areaServed}.</h2>
         <p class="muted">
-          Route service only works if we can get to you regularly, so we grow the
-          map deliberately rather than taking every site that calls. If you are
-          just outside it, ask anyway &mdash; a cluster of sites in one area is often
-          what opens a new route.
+          A set run only works if we can actually get to you regularly, so we grow
+          the map deliberately rather than taking on every site that rings. If you
+          are just outside it, ask anyway &mdash; a few sites in one town is usually
+          what opens up a new run.
         </p>
-        <a href="/contact/" class="btn">Check your address</a>
+        <a href="/contact/" class="btn">Check your postcode</a>
       </div>
       <ul class="area__list">
-        <li><Icon name="check" size={17} />Scheduled route visits, not on-request call-outs</li>
-        <li><Icon name="check" size={17} />Same driver on your site wherever possible</li>
-        <li><Icon name="check" size={17} />Multi-site accounts handled under one contact</li>
-        <li><Icon name="check" size={17} />Out-of-area enquiries kept on file for new routes</li>
+        <li><Icon name="check" size={17} />A set run, not a call-out when you chase us</li>
+        <li><Icon name="check" size={17} />The same driver on your site wherever we can</li>
+        <li><Icon name="check" size={17} />Multi-site accounts under one point of contact</li>
+        <li><Icon name="check" size={17} />Out-of-area enquiries kept on file for when a run opens up</li>
       </ul>
     </div>
   </section>
@@ -64,6 +72,10 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
   .page-head__sub { color: var(--muted); font-size: var(--step-1); max-width: 58ch; }
 
   .loc__title { font-size: var(--step-3); margin-bottom: 0.5rem; }
+
+  .card--cta { background: var(--blue-tint); border-color: #c5dcee; }
+  .card--cta:hover { border-color: var(--blue); }
+  .card--cta .loc__title { color: var(--blue-deep); }
   .area { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: var(--sp-6); align-items: center; }
   .area h2 { margin-block: var(--sp-2) var(--sp-3); max-width: 18ch; }
   .area .btn { margin-top: var(--sp-4); }

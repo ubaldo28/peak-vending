@@ -32,13 +32,13 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
   </div>
 
   <div class="form__row">
-    <label for={`${id}-business`}>Business or property</label>
-    <input id={`${id}-business`} name="business" type="text" autocomplete="organization" required placeholder="Acme Logistics" />
+    <label for={`${id}-business`}>Business or site</label>
+    <input id={`${id}-business`} name="business" type="text" autocomplete="organization" required placeholder="Tayside Logistics Ltd" />
     <p class="form__err" data-err="business"></p>
   </div>
 
   <div class="form__row">
-    <label for={`${id}-type`}>Location type</label>
+    <label for={`${id}-type`}>Type of site</label>
     <select id={`${id}-type`} name="locationType">
       {locations.map((loc) => (
         <option value={loc.data.title}>{loc.data.title}</option>
@@ -49,18 +49,18 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
 
   <div class="form__row">
     <label for={`${id}-email`}>Email</label>
-    <input id={`${id}-email`} name="email" type="email" autocomplete="email" required placeholder="you@company.com" />
+    <input id={`${id}-email`} name="email" type="email" autocomplete="email" required placeholder="you@yourbusiness.co.uk" />
     <p class="form__err" data-err="email"></p>
   </div>
 
   {variant === 'page' && (
     <div class="form__row">
-      <label for={`${id}-message`}>Anything we should know?</label>
-      <textarea id={`${id}-message`} name="message" rows="4" placeholder="Rough headcount, where you were thinking of putting it, anything unusual about the site."></textarea>
+      <label for={`${id}-message`}>Anything else we should know?</label>
+      <textarea id={`${id}-message`} name="message" rows="4" placeholder="Roughly how many folk are on site, where you were thinking of putting it, anything unusual about the building."></textarea>
     </div>
   )}
 
-  <button class="btn btn--block" type="submit" data-submit>Request a site visit</button>
+  <button class="btn btn--block" type="submit" data-submit>Book a site visit</button>
 
   <p class="form__status" role="status" aria-live="polite" data-status></p>
 </form>
@@ -205,7 +205,7 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
         if (res.ok && body.ok) {
           form.reset();
           if (stamp) stamp.value = String(Date.now());
-          setStatus(body.message ?? 'Thanks — we will be in touch shortly.', true);
+          setStatus(body.message ?? 'Cheers — we will be in touch shortly.', true);
         } else {
           if (body.errors) showErrors(body.errors);
           setStatus(body.message ?? 'Something went wrong. Please try again.', false);

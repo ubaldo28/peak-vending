@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Logo from '../components/Logo.astro';
 import { site } from '../data/site.ts';
 ---
 
@@ -11,14 +10,14 @@ import { site } from '../data/site.ts';
 >
   <section class="section mid">
     <div class="wrap">
-      <Logo variant="mark" width="88px" class="mid__mark" decorative />
-      <h1>Got it &mdash; thanks.</h1>
+      <div class="mid__rule" aria-hidden="true"></div>
+      <h1>Got that &mdash; cheers.</h1>
       <p class="mid__sub">
-        Your enquiry is with us. Someone will be in touch within one working day
-        to arrange the site visit.
+        Your enquiry is with us. Somebody will be in touch within one working
+        day to sort out the site visit.
       </p>
       <p class="fine">
-        In a hurry? Call <a href={`tel:${site.phoneHref}`}>{site.phone}</a> and mention you filled in the form.
+        In a hurry? Email <a href={`mailto:${site.email}`}>{site.email}</a> and say you filled in the form.
       </p>
       <div class="mid__actions">
         <a href="/" class="btn">Back to the homepage</a>
@@ -30,7 +29,13 @@ import { site } from '../data/site.ts';
 
 <style>
   .mid { text-align: center; padding-block: 7rem; }
-  .mid__mark { margin: 0 auto var(--sp-4); }
+  .mid__rule {
+    width: 120px;
+    height: 14px;
+    margin: 0 auto var(--sp-4);
+    opacity: 0.5;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cpath d='M0 12L20 3l20 9' fill='none' stroke='%231C72AF' stroke-width='2.4' stroke-linecap='square'/%3E%3C/svg%3E") repeat-x center / 40px 14px;
+  }
   .mid h1 { max-width: 14ch; margin: 0 auto var(--sp-3); }
   .mid__sub { color: var(--muted); font-size: var(--step-2); max-width: 46ch; margin: 0 auto var(--sp-3); }
   .mid__actions { display: flex; gap: 0.875rem; justify-content: center; flex-wrap: wrap; margin-top: var(--sp-5); }

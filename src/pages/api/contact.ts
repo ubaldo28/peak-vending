@@ -57,7 +57,7 @@ function validate(raw: Fields) {
   if (!data.name) errors.name = 'Tell us who you are.';
   if (!data.email) errors.email = 'We need an email to reply to.';
   else if (!EMAIL_RE.test(data.email)) errors.email = 'That email address does not look right.';
-  if (!data.business) errors.business = 'Which business or property is this for?';
+  if (!data.business) errors.business = 'Which business or site is this for?';
 
   return { data, errors };
 }
@@ -88,8 +88,8 @@ async function sendEmail(env: Env, d: Fields) {
   const rows = [
     ['Name', d.name],
     ['Email', d.email],
-    ['Business / property', d.business],
-    ['Location type', d.locationType || '—'],
+    ['Business / site', d.business],
+    ['Type of site', d.locationType || '—'],
     ['Message', d.message || '—'],
   ];
 
@@ -153,7 +153,7 @@ export async function POST(ctx: APIContext): Promise<Response> {
       raw = Object.fromEntries(Array.from(form.entries()).map(([k, v]) => [k, String(v)]));
     }
   } catch {
-    return reply(400, { ok: false, message: 'We could not read that submission. Try again.' });
+    return reply(400, { ok: false, message: 'We could not read that. Try again.' });
   }
 
   // Honeypot: a field hidden from people but filled in by most bots.
@@ -176,7 +176,7 @@ export async function POST(ctx: APIContext): Promise<Response> {
   if (await rateLimited(env, ip)) {
     return reply(429, {
       ok: false,
-      message: 'That is a few too many submissions. Email us directly and we will pick it up.',
+      message: 'That is a few too many tries. Email us directly and we will pick it up.',
     });
   }
 
@@ -186,7 +186,7 @@ export async function POST(ctx: APIContext): Promise<Response> {
     console.warn('[contact] Email is not configured — set RESEND_API_KEY, CONTACT_TO and CONTACT_FROM.');
     return reply(503, {
       ok: false,
-      message: 'The contact form is not connected yet. Please email or call us in the meantime.',
+      message: 'The form is not hooked up yet. Please email or ring us in the meantime.',
     });
   }
 
@@ -194,11 +194,11 @@ export async function POST(ctx: APIContext): Promise<Response> {
     console.error('[contact] Provider rejected the send:', (sent as any).detail);
     return reply(502, {
       ok: false,
-      message: 'We could not send that just now. Please try again, or call us.',
+      message: 'We could not send that just now. Try again, or give us a ring.',
     });
   }
 
-  return reply(200, { ok: true, message: 'Thanks — we will be in touch shortly.' }, '/thanks/');
+  return reply(200, { ok: true, message: 'Cheers — we will be in touch shortly.' }, '/thanks/');
 }
 
 /** Anything other than POST gets a clear answer rather than a stack trace. */

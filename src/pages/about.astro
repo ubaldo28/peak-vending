@@ -1,6 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import Logo from '../components/Logo.astro';
 import Icon from '../components/Icon.astro';
 import Sponsors from '../components/Sponsors.astro';
 import { site } from '../data/site.ts';
@@ -8,54 +7,54 @@ import { site } from '../data/site.ts';
 const steps = [
   {
     title: 'You get in touch',
-    body: 'Address, building type, and roughly how many people are in it. That is everything we need to start.',
+    body: 'The address, what sort of building it is, and roughly how many folk are in it. That is us started.',
   },
   {
     title: 'We visit the site',
-    body: 'We walk the space, check the power, and work out where the foot traffic actually goes.',
+    body: 'We come round, look at the space, check the power, and work out where folk actually walk.',
   },
   {
     title: 'You approve the plan',
-    body: 'Machine type, product lineup, and pricing, written down before anything is ordered.',
+    body: 'Machine, range and prices, written down before anything is ordered.',
   },
   {
     title: 'We install and take over',
-    body: 'Delivery, placement, stocking, and every visit after that. You get a name and a number.',
+    body: 'Delivery, positioning, filling, and every visit after that. You get a name and a number.',
   },
 ];
 
 const principles = [
   {
     icon: 'shield',
-    title: 'The location never pays',
-    body: 'No purchase, no lease, no maintenance contract, no minimum. We carry the equipment cost because we think the machine should have to earn its place.',
+    title: 'The site never pays a penny',
+    body: 'Nothing to buy, nothing to lease, no maintenance contract, no minimum. We carry the cost of the machine because we reckon it ought to earn its place.',
   },
   {
     icon: 'wrench',
-    title: 'One number, and it is ours',
-    body: 'Your maintenance team should never have to open a vending machine. There is a sticker on every unit and it rings us, not a manufacturer.',
+    title: 'One number, and we answer it',
+    body: 'Your maintenance folk should never have to open a vending machine. There is a sticker on every one of ours and it rings us, not a manufacturer.',
   },
   {
     icon: 'chart',
     title: 'If it does not sell, it goes',
-    body: 'A machine nobody uses is worse than no machine. If a site is not moving product after a fair run, we will tell you and take it out.',
+    body: 'A machine nobody uses is worse than no machine at all. If a site is not shifting anything after a fair go, we will say so and take it away.',
   },
 ];
 ---
 
 <Base
   title="About"
-  description="Peak Vending is a locally owned, full-service vending operator. We place, stock, and service machines at no cost to the location."
+  description="Peak Vending is an independent, full-service vending operator based in Dundee, covering Angus, Fife and Perthshire. We install, fill and maintain machines at no cost to the site."
 >
   <section class="section section--tight head">
     <div class="wrap">
-      <Logo variant="mark" width="96px" class="head__mark" decorative />
       <p class="eyebrow">About Peak Vending</p>
-      <h1>A vending company that shows up.</h1>
+      <h1>A vending firm that turns up.</h1>
       <p class="head__sub">
-        Most vending complaints are not about the machine. They are about the
-        weeks it sat empty, or the call nobody returned. We built the business
-        around fixing that, which is a low bar and a surprisingly rare one.
+        Most complaints about vending are not really about the machine. They are
+        about the fortnight it sat empty, or the call nobody returned. We built
+        the business round fixing that, which is a low bar and a surprisingly
+        rare one.
       </p>
     </div>
   </section>
@@ -66,26 +65,27 @@ const principles = [
     <div class="wrap story">
       <div class="reveal">
         <p class="eyebrow">Why we exist</p>
-        <h2>Vending is a service business wearing a hardware costume.</h2>
+        <h2>Vending is a service business dressed up as a bit of kit.</h2>
       </div>
       <div class="story__body reveal">
         <p>
-          Anyone can put a machine in a room. The difference between an amenity
-          people appreciate and a piece of furniture people complain about is
-          entirely in what happens after the install &mdash; whether it gets restocked
-          on a schedule, whether the lineup reflects what your people actually
-          buy, and whether a fault gets fixed this week or next month.
+          Anyone can stick a machine in a room. The difference between something
+          folk are glad of and a bit of furniture they moan about is entirely
+          what happens after it is fitted &mdash; whether it gets filled on a set
+          run, whether the range matches what your lot actually buy, and whether
+          a fault gets sorted this week or next month.
         </p>
         <p>
-          That is the part we are set up for. We run routes rather than
-          call-outs, we share the sales numbers with the sites we serve, and we
-          would rather pull a machine from a location that is not working than
-          leave it there earning nothing and irritating everybody.
+          That is the part we are set up for. We work set runs rather than
+          call-outs, we share the sales figures with the sites we look after, and
+          we would sooner take a machine away from somewhere it is not working
+          than leave it sitting there earning nothing and annoying everybody.
         </p>
         <p>
-          We are locally owned and we intend to stay that way. It means we take
-          on sites we can genuinely get to, and it means the person who quotes
-          you is the person you will still be dealing with a year later.
+          We are based in Dundee and independent, and we intend to stay that way.
+          It means we only take on sites we can genuinely get round, and it means
+          the person who quotes you is the person you will still be dealing with
+          a year later.
         </p>
       </div>
     </div>
@@ -113,7 +113,7 @@ const principles = [
     <div class="wrap">
       <div class="lede reveal">
         <p class="eyebrow">Getting started</p>
-        <h2>Four steps, and none of them are yours.</h2>
+        <h2>Four steps, and none of them land on you.</h2>
       </div>
       <ol class="steps">
         {steps.map((step, i) => (
@@ -134,7 +134,7 @@ const principles = [
       <div>
         <p class="eyebrow">Talk to us</p>
         <h2>Serving {site.areaServed}.</h2>
-        <p>Call {site.phone} or send the details and we will come and look.</p>
+        <p>Send us the details and we&rsquo;ll come round and have a look.</p>
       </div>
       <a href="/contact/" class="btn btn--light">Request a site visit</a>
     </div>
@@ -142,7 +142,6 @@ const principles = [
 </Base>
 
 <style>
-  .head__mark { margin-bottom: var(--sp-4); }
   .head h1 { max-width: 16ch; margin-block: var(--sp-2) var(--sp-3); }
   .head__sub { color: var(--muted); font-size: var(--step-1); max-width: 58ch; }
 

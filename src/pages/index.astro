@@ -1,12 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import Logo from '../components/Logo.astro';
 import Machine from '../components/Machine.astro';
 import Icon from '../components/Icon.astro';
 import Sponsors from '../components/Sponsors.astro';
 import ContactForm from '../components/ContactForm.astro';
-import { proofPoints } from '../data/site.ts';
+import { site, proofPoints } from '../data/site.ts';
 
 const services = (await getCollection('services'))
   .filter((s) => s.data.featured)
@@ -21,19 +20,18 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
 >
   <section class="hero">
     <div class="wrap">
-      <Logo variant="mark" width="132px" class="hero__mark" decorative />
       <p class="eyebrow">Full-service vending</p>
-      <h1>Vending your team actually uses.</h1>
+      <h1>Vending your staff actually use.</h1>
       <p class="hero__sub">
-        We install, stock, and service the machines. Your only job is telling us
-        where to put them.
+        We fit them, fill them and fix them. All you do is tell us where to
+        put them.
       </p>
       <div class="hero__actions">
-        <a href="/contact/" class="btn">See if you qualify</a>
+        <a href="/contact/" class="btn">See if we cover you</a>
         <a href="#how" class="btn btn--ghost">How it works</a>
       </div>
       <p class="fine hero__fine">
-        Free site assessment &middot; No contracts to chase &middot; Locally owned and operated
+        Free site visit &middot; No contract to sign &middot; Based in Dundee
       </p>
     </div>
   </section>
@@ -57,7 +55,7 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
         <p class="eyebrow">What we handle</p>
         <h2>Everything past the plug.</h2>
         <p>
-          A vending machine is only an amenity if somebody keeps it full and
+          A vending machine is only worth having if somebody keeps it filled and
           working. That part is the whole job.
         </p>
       </div>
@@ -78,7 +76,7 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
   <section class="section section--surface">
     <div class="wrap">
       <div class="lede reveal">
-        <p class="eyebrow">Where we place</p>
+        <p class="eyebrow">Where we install</p>
         <h2>Built for buildings with people in them.</h2>
       </div>
       <div class="tiles reveal">
@@ -88,6 +86,13 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
             <span>{loc.data.summary}</span>
           </a>
         ))}
+        <a href="/contact/" class="tile-link tile-cta">
+          <span class="tile-cta__text">
+            <b>Not on the list?</b>
+            <span>Ask anyway. If we can reach you on a run, we can usually help.</span>
+          </span>
+          <span class="tile-cta__go" aria-hidden="true">&rarr;</span>
+        </a>
       </div>
     </div>
   </section>
@@ -97,15 +102,15 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
       <div class="split reveal">
         <div class="figure"><Machine /></div>
         <div>
-          <p class="eyebrow">Snack &amp; beverage</p>
+          <p class="eyebrow">Snacks &amp; drinks</p>
           <h3>Modern machines, not the one from 1998.</h3>
           <p class="muted">
-            Glass-front units with drop sensors, so nothing gets stuck and charged
-            for. Card readers built in. Lit, quiet, and sized to the room.
+            Glass-front units with drop sensors, so nothing sticks and charges you
+            for it anyway. Card readers built in. Lit, quiet, and sized to the room.
           </p>
           <ul class="checks">
-            <li><Icon name="check" size={17} />Tap-to-pay, chip, and mobile wallets</li>
-            <li><Icon name="check" size={17} />Guaranteed-vend sensors with automatic refund</li>
+            <li><Icon name="check" size={17} />Contactless, chip and pin, Apple Pay and Google Pay</li>
+            <li><Icon name="check" size={17} />Drop sensors that refund a failed vend on their own</li>
             <li><Icon name="check" size={17} />Energy-efficient LED and low-noise compressors</li>
           </ul>
         </div>
@@ -115,19 +120,40 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
         <div class="figure"><Machine /></div>
         <div>
           <p class="eyebrow">Your say in it</p>
-          <h3>You pick the lineup. We keep it honest.</h3>
+          <h3>You pick the range. We keep it honest.</h3>
           <p class="muted">
-            Tell us what your people want in there and we build the planogram
-            around it. If something sits, it comes out &mdash; you don&rsquo;t have to
-            ask twice.
+            Tell us what your folk want in there and we build the range round it.
+            If something sits, it comes out &mdash; you should not have to ask
+            twice.
           </p>
           <ul class="checks">
             <li><Icon name="check" size={17} />Healthier-option and allergen-aware selections</li>
-            <li><Icon name="check" size={17} />Local brands where you want them</li>
-            <li><Icon name="check" size={17} />Price points set with you, not sprung on you</li>
+            <li><Icon name="check" size={17} />Scottish brands where you want them</li>
+            <li><Icon name="check" size={17} />Prices set with you, not sprung on you</li>
           </ul>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section section--tight areas">
+    <div class="wrap">
+      <div class="lede reveal">
+        <p class="eyebrow">Where we run</p>
+        <h2>Routes across Tayside and Fife.</h2>
+        <p>
+          We only take on sites we can genuinely get to on a regular run. That
+          is the whole reason the machines stay filled.
+        </p>
+      </div>
+      <ul class="areas__grid reveal">
+        {site.areas.map((area) => (
+          <li>
+            <b>{area.name}</b>
+            <span>{area.blurb}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   </section>
 
@@ -137,10 +163,10 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
     <div class="wrap">
       <div>
         <p class="eyebrow">Get started</p>
-        <h2>Tell us about your space.</h2>
+        <h2>Tell us about your site.</h2>
         <p>
-          Send the basics and we&rsquo;ll come look at it. If it&rsquo;s a fit, we&rsquo;ll tell
-          you what we&rsquo;d put in and when we could have it running.
+          Send us the basics and we&rsquo;ll come and have a look. If it suits, we&rsquo;ll
+          tell you what we&rsquo;d put in and when we could have it running.
         </p>
       </div>
       <ContactForm variant="panel" id="home-form" />
@@ -151,10 +177,9 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
 <style>
   .hero {
     text-align: center;
-    padding-block: 6.5rem 5.25rem;
+    padding-block: 5.5rem 5.25rem;
     background: radial-gradient(120% 78% at 50% 0%, #ffffff 0%, var(--ground) 62%);
   }
-  .hero__mark { margin: 0 auto var(--sp-4); }
   .hero h1 { max-width: 16ch; margin: 0.875rem auto var(--sp-3); }
   .hero__sub {
     font-size: var(--step-2);
@@ -166,8 +191,52 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
   .hero__fine { margin-top: var(--sp-3); }
 
   .tile-link { text-decoration: none; color: inherit; transition: background 0.16s ease; }
+
+  /* Fills whatever is left of the final row, so a short row never reads as
+     empty cells. The .tiles span rule decides how wide it gets. */
+  .tile-cta {
+    background: var(--blue-tint);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-3);
+  }
+  .tile-cta:hover { background: #dbe9f5; }
+  .tile-cta b { color: var(--blue-deep); }
+  .tile-cta__text > span { color: var(--ink-soft); }
+  .tile-cta__go {
+    font-size: 1.5rem;
+    line-height: 1;
+    color: var(--blue);
+    flex: none;
+    transition: transform 0.18s ease;
+  }
+  .tile-cta:hover .tile-cta__go { transform: translateX(4px); }
   .tile-link:hover { background: var(--blue-tint); color: inherit; }
   .tile-link:hover b { color: var(--blue); }
+
+  .areas__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .areas__grid li { background: var(--surface); padding: var(--sp-4); }
+  .areas__grid b {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 0.3rem;
+  }
+  .areas__grid span { display: block; font-size: 0.96875rem; line-height: 1.5; color: var(--muted); }
+  @media (max-width: 900px) { .areas__grid { grid-template-columns: 1fr; } }
 
   @media (max-width: 900px) {
     .hero { padding-block: 3.5rem 3rem; }

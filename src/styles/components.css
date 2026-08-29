@@ -96,7 +96,14 @@
   margin-bottom: 0.3rem;
 }
 .tiles span { display: block; font-size: 0.96875rem; line-height: 1.5; color: var(--muted); }
-@media (max-width: 900px) { .tiles { grid-template-columns: 1fr; } }
+/* A partial last row would leave empty cells showing the grid line colour.
+   Let the final tile stretch across whatever is left instead. */
+.tiles > *:last-child:nth-child(3n + 1) { grid-column: span 3; }
+.tiles > *:last-child:nth-child(3n + 2) { grid-column: span 2; }
+@media (max-width: 900px) {
+  .tiles { grid-template-columns: 1fr; }
+  .tiles > *:last-child { grid-column: auto; }
+}
 
 /* --- Checked list --------------------------------------------------- */
 .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; }

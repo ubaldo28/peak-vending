@@ -7,36 +7,36 @@ import { site } from '../data/site.ts';
 const faqs = [
   {
     q: 'What does this cost us?',
-    a: 'Nothing. We own the machine, we pay for the product, and we cover service. Revenue comes from sales, which is why we care about getting the lineup right.',
+    a: 'Nothing. We own the machine, we pay for the stock, and we cover the servicing. We make our money on what sells, which is exactly why we care about getting the range right.',
   },
   {
-    q: 'How big does our site need to be?',
-    a: 'Smaller than most people assume. Shift patterns and how far the nearest shop is matter more than headcount. If it is genuinely too small, we will say so rather than put a machine in that will not earn.',
+    q: 'How big does our site have to be?',
+    a: 'Smaller than most folk assume. Shift patterns and how far the nearest shop is matter far more than headcount. If it is genuinely too small we will tell you, rather than fit a machine that will not earn.',
   },
   {
     q: 'What do you need from us?',
-    a: 'A standard grounded outlet on a circuit that is not already loaded, and access to get the machine in. That is it. We check both at the site visit so there are no surprises on delivery day.',
+    a: 'A standard 13-amp socket on a circuit that is not already loaded, and a way to get the machine in. That is it. We check both when we come round, so there are no surprises on the day.',
   },
   {
     q: 'How long does it take?',
-    a: 'Site visit within a few days of getting in touch, a written proposal after that, and install once you have approved it. Most sites are running inside a couple of weeks.',
+    a: 'We will come round within a few days of you getting in touch, put a written quote to you after that, and fit it once you are happy. Most sites are up and running inside a fortnight.',
   },
 ];
 ---
 
 <Base
   title="Contact"
-  description="Request a free site visit from Peak Vending. Tell us about your location and we will tell you what it would support."
+  description="Book a free site visit from Peak Vending. Covering Dundee, Angus, Fife and Perthshire. Tell us about your site and we will tell you what it would take."
 >
   <section class="section section--tight">
     <div class="wrap contact">
       <div>
         <p class="eyebrow">Contact</p>
-        <h1>Tell us about your space.</h1>
+        <h1>Tell us about your site.</h1>
         <p class="contact__sub">
-          Send the basics and we&rsquo;ll come look at it. If it&rsquo;s a fit, we&rsquo;ll tell
-          you what we&rsquo;d put in and when we could have it running. If it isn&rsquo;t,
-          we&rsquo;ll tell you that too.
+          Send us the basics and we&rsquo;ll come and have a look. If it suits, we&rsquo;ll
+          tell you what we&rsquo;d put in and when we could have it running. If it
+          doesn&rsquo;t, we&rsquo;ll tell you that as well.
         </p>
 
         <ul class="contact__direct">
@@ -47,13 +47,15 @@ const faqs = [
               <a href={`mailto:${site.email}`}>{site.email}</a>
             </div>
           </li>
-          <li>
-            <Icon name="phone" size={20} />
-            <div>
-              <span>Phone</span>
-              <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
-            </div>
-          </li>
+          {site.phone && (
+            <li>
+              <Icon name="phone" size={20} />
+              <div>
+                <span>Phone</span>
+                <a href={`tel:${site.phoneHref}`}>{site.phone}</a>
+              </div>
+            </li>
+          )}
           <li>
             <Icon name="pin" size={20} />
             <div>
@@ -62,11 +64,11 @@ const faqs = [
             </div>
           </li>
         </ul>
-        <p class="fine">{site.hours}. Enquiries outside those hours get picked up the next working day.</p>
+        <p class="fine">{site.hours}. Anything that comes in outside those hours gets picked up the next working day.</p>
       </div>
 
       <div class="contact__panel">
-        <h2 class="contact__panel-head">Request a site visit</h2>
+        <h2 class="contact__panel-head">Book a site visit</h2>
         <ContactForm variant="page" id="contact-page-form" />
       </div>
     </div>
@@ -78,7 +80,7 @@ const faqs = [
     <div class="wrap faq">
       <div>
         <p class="eyebrow">Common questions</p>
-        <h2>The things people ask on the first call.</h2>
+        <h2>What folk ask on the first call.</h2>
       </div>
       <div>
         {faqs.map((item, i) => (

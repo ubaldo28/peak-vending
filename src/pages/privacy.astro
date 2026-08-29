@@ -2,9 +2,9 @@
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site.ts';
 
-// DRAFT. This covers what the site actually does today — a contact form and
-// nothing else. Have it reviewed before launch, and update it the moment you
-// add analytics, advertising pixels, or any third-party embed.
+// DRAFT. This describes what the site actually does today — a contact form and
+// nothing else. Have it checked before launch, and update it the moment you add
+// analytics, an advertising pixel, or any third-party embed.
 const updated = 'August 2026';
 ---
 
@@ -18,46 +18,60 @@ const updated = 'August 2026';
       <h1>What we do with your details.</h1>
       <p class="legal__meta">Last updated {updated}</p>
 
-      <h2>What this site collects</h2>
+      <h2>Who we are</h2>
       <p>
-        The only information this website collects is what you type into the
-        contact form: your name, your email address, the business or property
-        you are enquiring about, the location type you select, and anything you
-        write in the message box.
+        {site.legalName} is the data controller for this website. You can reach
+        us at <a href={`mailto:${site.email}`}>{site.email}</a>.
       </p>
 
-      <h2>Why we collect it</h2>
+      <h2>What we collect</h2>
       <p>
-        To reply to your enquiry and, if it goes further, to arrange a site
-        visit. We do not sell it, rent it, or pass it to anyone outside the
-        people at {site.legalName} who need it to answer you.
+        Only what you type into the contact form: your name, your email address,
+        the business or site you are enquiring about, the type of site you
+        select, and anything you write in the message box. Nothing else on this
+        website collects information about you.
       </p>
 
-      <h2>How it reaches us</h2>
+      <h2>Why we collect it, and our lawful basis</h2>
       <p>
-        Form submissions are delivered to us by email through a third-party
-        email provider, and the site is hosted on a content delivery network.
-        Both handle the submission in transit; neither uses it for their own
-        purposes.
+        To reply to your enquiry and, if it goes any further, to arrange a site
+        visit and quote. Our lawful basis under UK GDPR is legitimate interests
+        &mdash; responding to someone who has deliberately contacted us about our
+        services. We do not use your details for marketing unless you ask us to.
+      </p>
+
+      <h2>Who else sees it</h2>
+      <p>
+        Form submissions reach us by email through a third-party email provider,
+        and this site is hosted on a content delivery network. Both handle the
+        submission in transit as processors on our instructions. Neither uses it
+        for their own purposes, and we do not sell or rent your details to
+        anybody.
       </p>
 
       <h2>Cookies and tracking</h2>
       <p>
-        This site sets no cookies and runs no advertising or analytics trackers.
-        If that changes, this page will be updated first.
+        This site sets no cookies and runs no analytics or advertising trackers.
+        If that changes, this page gets updated first.
       </p>
 
       <h2>How long we keep it</h2>
       <p>
-        Enquiries stay in our email for as long as the conversation is useful.
-        If you would like yours deleted, ask and we will remove it.
+        Enquiries stay in our email for as long as the conversation is useful to
+        either of us. Ask and we will delete yours.
       </p>
 
-      <h2>Getting in touch about your data</h2>
+      <h2>Your rights</h2>
       <p>
-        Email <a href={`mailto:${site.email}`}>{site.email}</a> or call
-        <a href={`tel:${site.phoneHref}`}>{site.phone}</a> and we will deal with
-        it directly.
+        Under UK data protection law you can ask us for a copy of what we hold
+        about you, ask us to correct it or delete it, or object to how we are
+        using it. Email us and we will deal with it directly.
+      </p>
+      <p>
+        If you are not happy with how we have handled it, you can complain to the
+        Information Commissioner&rsquo;s Office at
+        <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a> or on
+        0303 123 1113.
       </p>
     </div>
   </section>

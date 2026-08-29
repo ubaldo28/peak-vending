@@ -25,13 +25,13 @@ const plainTitle = title;
     <div class="wrap head__in">
       <div>
         <nav class="crumbs" aria-label="Breadcrumb">
-          <a href="/locations/">Locations we serve</a>
+          <a href="/locations/">Where we install</a>
           <span aria-hidden="true">/</span>
           <span>{title}</span>
         </nav>
         <h1>{heading ?? title}</h1>
         <p class="head__sub">{summary}</p>
-        <a href="/contact/" class="btn">Request a site visit</a>
+        <a href="/contact/" class="btn">Book a site visit</a>
       </div>
       <div class="figure head__figure"><Machine /></div>
     </div>
@@ -43,7 +43,7 @@ const plainTitle = title;
     <div class="wrap cols">
       <div class="reveal">
         <p class="eyebrow">What we see on these sites</p>
-        <h2>The situations a machine actually solves.</h2>
+        <h2>What a machine actually sorts out.</h2>
         <ul class="checks cols__list">
           {points.map((point) => (
             <li><Icon name="check" size={17} />{point}</li>
@@ -53,13 +53,13 @@ const plainTitle = title;
 
       <div class="reveal">
         <p class="eyebrow">What we stock here</p>
-        <h2>Built for this kind of building.</h2>
+        <h2>Built round this kind of building.</h2>
         <ul class="tags">
           {stock.map((item) => <li>{item}</li>)}
         </ul>
         <p class="muted tags__note">
-          This is a starting point, not a fixed list. The lineup gets agreed with
-          you before launch and corrected as the sales data comes back.
+          That is a starting point, not a fixed list. The range gets agreed with
+          you before we switch it on, and corrected as the sales come back.
         </p>
       </div>
     </div>
@@ -69,7 +69,7 @@ const plainTitle = title;
     <div class="wrap">
       <div class="lede">
         <p class="eyebrow">Other locations</p>
-        <h2>We also serve these.</h2>
+        <h2>We cover these too.</h2>
       </div>
       <div class="grid-3">
         {others.map((other) => (
@@ -89,8 +89,9 @@ const plainTitle = title;
         <p class="eyebrow">Get started</p>
         <h2>Vending for your {plainTitle.toLowerCase()}.</h2>
         <p>
-          Send us the address and rough headcount. We will come out, look at the
-          space, and tell you straight whether it is worth a machine.
+          Send us the address and roughly how many folk are on site. We&rsquo;ll come
+          out, look at the space, and tell you straight whether it is worth a
+          machine.
         </p>
       </div>
       <ContactForm variant="panel" id={`loc-form-${entry.id}`} />

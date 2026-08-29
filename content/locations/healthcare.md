@@ -1,17 +1,17 @@
 ---
-title: "Clinics & care facilities"
-heading: "Vending for clinics and care facilities"
-summary: "Staff and visitors, around the clock, with quiet units."
-metaDescription: "Vending for clinics, care homes, and medical facilities. Quiet units, considered product lists, free placement."
+title: "Clinics & care homes"
+heading: "Vending for clinics and care homes"
+summary: "Staff and visitors, round the clock, with quiet machines."
+metaDescription: "Vending for clinics, care homes and medical practices in Dundee, Angus, Fife and Perthshire. Quiet units, sensible product lists, free placement."
 order: 60
 points:
-  - "Night staff with no catering available"
+  - "Night staff with nothing open on site"
   - "Visitors and families waiting outside normal hours"
-  - "Wards and corridors where machine noise matters"
-  - "Sites needing a considered rather than confectionery-led product list"
+  - "Corridors and day rooms where machine noise genuinely matters"
+  - "Sites needing a sensible range rather than a wall of chocolate"
 stock:
-  - "Low-noise refrigeration units"
+  - "Low-noise refrigeration"
   - "Balanced and lower-sugar ranges"
-  - "Hot drinks for overnight staff"
+  - "Hot drinks for the night shift"
   - "Clear allergen labelling"
 ---

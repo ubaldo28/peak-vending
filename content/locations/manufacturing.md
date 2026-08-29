@@ -1,17 +1,17 @@
 ---
-title: "Manufacturing & shop floors"
-heading: "Vending for manufacturing and shop floors"
-summary: "Bays and lines running through lunch, with hands full."
-metaDescription: "Vending for manufacturing plants, auto shops, and shop floors. Free placement, route-stocked, serviced by us."
+title: "Factories & shop floors"
+heading: "Vending for factories and shop floors"
+summary: "Lines and bays running through lunch, with hands full."
+metaDescription: "Vending for factories, engineering works, garages and bodyshops in Dundee, Angus, Fife and Perthshire. Free placement, filled and maintained by us."
 order: 30
 points:
-  - "Lines that do not stop for a staggered lunch"
-  - "Auto and body shops working through the middle of the day"
-  - "Sites with strict PPE zones where leaving the floor costs time"
+  - "Lines that do not stop for a staggered lunch break"
+  - "Garages and bodyshops working straight through the middle of the day"
+  - "Sites with PPE zones where getting off the floor eats the whole break"
   - "Contractors and visiting drivers who are not on the canteen list"
 stock:
-  - "Cold drinks in volume"
+  - "Cold drinks by the case"
   - "Filling savoury options"
-  - "Isotonic drinks for hot environments"
-  - "Grab-and-go items that survive a pocket"
+  - "Isotonic drinks for hot areas"
+  - "Grab-and-go that survives an overall pocket"
 ---
