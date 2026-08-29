@@ -85,25 +85,149 @@ async function sendEmail(env: Env, d: Fields) {
     return { ok: false, reason: 'unconfigured' as const };
   }
 
-  const rows = [
-    ['Name', d.name],
-    ['Email', d.email],
-    ['Business / site', d.business],
+  const rows: [string, string][] = [
+    ['Name', d.name ?? ''],
+    ['Email', d.email ?? ''],
+    ['Business / site', d.business ?? ''],
     ['Type of site', d.locationType || '—'],
-    ['Message', d.message || '—'],
   ];
+  const message = (d.message || '').trim();
 
-  const html = `
-    <h2 style="font-family:system-ui,sans-serif;color:#2E322D">New enquiry from peak-vending.com</h2>
-    <table style="font-family:system-ui,sans-serif;border-collapse:collapse">
-      ${rows
-        .map(
-          ([k, v]) =>
-            `<tr><td style="padding:6px 16px 6px 0;color:#6B7169;vertical-align:top">${k}</td>` +
-            `<td style="padding:6px 0"><strong>${escapeHtml(v)}</strong></td></tr>`,
-        )
-        .join('')}
-    </table>`;
+  // ---------------------------------------------------------------------
+  // Email markup is deliberately old-fashioned: nested tables, inline
+  // styles, no flexbox, no grid, no <style> block that Outlook will bin.
+  // Colours and type mirror the Summit look on the site.
+  // ---------------------------------------------------------------------
+  const PAPER = '#F1F3EF';
+  const CARD = '#FFFFFF';
+  const INK = '#2E322D';
+  const MUTED = '#6B7169';
+  const LINE = '#E2E5DE';
+  const BLUE = '#1C72AF';
+  const TINT = '#EDF4FA';
+  const SANS =
+    "'Helvetica Neue',Helvetica,Arial,'Segoe UI',Roboto,sans-serif";
+
+  const cell = (label: string, value: string, last: boolean) => `
+              <tr>
+                <td style="padding:14px 0 ${last ? '2' : '14'}px;border-bottom:${
+                  last ? 'none' : `1px solid ${LINE}`
+                };font-family:${SANS};font-size:12px;line-height:16px;letter-spacing:.09em;text-transform:uppercase;color:${MUTED};width:150px;vertical-align:top">${escapeHtml(
+                  label,
+                )}</td>
+                <td style="padding:14px 0 ${last ? '2' : '14'}px;border-bottom:${
+                  last ? 'none' : `1px solid ${LINE}`
+                };font-family:${SANS};font-size:16px;line-height:24px;color:${INK};font-weight:600;vertical-align:top">${escapeHtml(
+                  value,
+                )}</td>
+              </tr>`;
+
+  const messageBlock = message
+    ? `
+            <tr>
+              <td style="padding:0 32px 8px">
+                <div style="font-family:${SANS};font-size:12px;line-height:16px;letter-spacing:.09em;text-transform:uppercase;color:${MUTED};padding-bottom:8px">Message</div>
+                <div style="font-family:${SANS};font-size:16px;line-height:26px;color:${INK};background:${TINT};border-left:3px solid ${BLUE};padding:16px 18px;border-radius:0 4px 4px 0">${escapeHtml(
+                  message,
+                ).replace(/\n/g, '<br>')}</div>
+              </td>
+            </tr>`
+    : '';
+
+  const html = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>New enquiry from peak-vending.com</title>
+</head>
+<body style="margin:0;padding:0;background:${PAPER};-webkit-text-size-adjust:100%">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0">${escapeHtml(
+    d.name ?? '',
+  )} at ${escapeHtml(d.business ?? '')} — ${escapeHtml(
+    d.locationType || 'enquiry',
+  )}</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${PAPER}">
+    <tr>
+      <td align="center" style="padding:32px 16px">
+
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:100%">
+
+          <tr>
+            <td align="center" style="padding:0 0 24px">
+              <img src="https://peak-vending.com/email-logo.png" width="220" height="115" alt="Peak Vending" style="display:block;border:0;width:220px;height:auto">
+            </td>
+          </tr>
+
+          <tr>
+            <td style="background:${CARD};border:1px solid ${LINE};border-radius:8px">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+
+                <tr>
+                  <td style="padding:28px 32px 0">
+                    <div style="font-family:${SANS};font-size:12px;line-height:16px;letter-spacing:.11em;text-transform:uppercase;color:${BLUE};font-weight:700">New enquiry</div>
+                    <div style="font-family:${SANS};font-size:24px;line-height:32px;color:${INK};font-weight:700;padding-top:6px">${escapeHtml(
+                      d.business ?? 'A new site',
+                    )}</div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding:20px 32px 0">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${rows
+                      .map(([k, v], i) => cell(k, v, i === rows.length - 1))
+                      .join('')}
+                    </table>
+                  </td>
+                </tr>
+
+                <tr><td style="height:20px;line-height:20px;font-size:0">&nbsp;</td></tr>
+${messageBlock}
+                <tr>
+                  <td style="padding:20px 32px 28px">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td style="background:${BLUE};border-radius:4px">
+                          <a href="mailto:${encodeURIComponent(
+                            d.email ?? '',
+                          ).replace(/%40/g, '@')}?subject=${encodeURIComponent(
+                            'Re: your vending enquiry',
+                          )}" style="display:inline-block;padding:13px 22px;font-family:${SANS};font-size:15px;line-height:20px;font-weight:700;color:#FFFFFF;text-decoration:none">Reply to ${escapeHtml(
+                            (d.name ?? '').split(' ')[0] || 'them',
+                          )}</a>
+                        </td>
+                      </tr>
+                    </table>
+                    <div style="font-family:${SANS};font-size:14px;line-height:20px;color:${MUTED};padding-top:14px">Or just hit reply — this email replies straight to them.</div>
+                  </td>
+                </tr>
+
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td align="center" style="padding:20px 8px 0;font-family:${SANS};font-size:13px;line-height:20px;color:${MUTED}">
+              Sent by the contact form at <a href="https://peak-vending.com" style="color:${BLUE};text-decoration:none">peak-vending.com</a><br>
+              Dundee, Angus, Fife and Perthshire
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+  const text = [
+    'NEW ENQUIRY — peak-vending.com',
+    '',
+    ...rows.map(([k, v]) => `${k}: ${v}`),
+    ...(message ? ['', 'Message:', message] : []),
+    '',
+    'Reply to this email to answer them directly.',
+  ].join('\n');
 
   const endpoint = env.RESEND_ENDPOINT || 'https://api.resend.com/emails';
   const res = await fetch(endpoint, {
@@ -118,7 +242,7 @@ async function sendEmail(env: Env, d: Fields) {
       reply_to: d.email,
       subject: `Vending enquiry — ${d.business}`,
       html,
-      text: rows.map(([k, v]) => `${k}: ${v}`).join('\n'),
+      text,
     }),
   });
 
