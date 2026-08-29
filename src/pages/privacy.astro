@@ -2,15 +2,16 @@
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site.ts';
 
-// DRAFT. This describes what the site actually does today — a contact form and
-// nothing else. Have it checked before launch, and update it the moment you add
-// analytics, an advertising pixel, or any third-party embed.
-const updated = 'August 2026';
+// Describes exactly what the site does today: one contact form, no cookies,
+// no analytics. Update it the moment you add analytics, an ad pixel, a chat
+// widget, or any third-party embed — all of those change what this must say.
+// Not legal advice. Worth twenty minutes of a solicitor's time before launch.
+const updated = '29 August 2026';
 ---
 
 <Base
   title="Privacy"
-  description="How Peak Vending handles the information you send through this website."
+  description="What Peak Vending does with the information you send through this website."
 >
   <section class="section legal">
     <div class="wrap">
@@ -18,57 +19,94 @@ const updated = 'August 2026';
       <h1>What we do with your details.</h1>
       <p class="legal__meta">Last updated {updated}</p>
 
+      <p class="legal__lede">
+        Short version: the only thing this website collects is what you type into
+        the contact form, we use it to reply to you, and we do not sell it to
+        anybody. The detail is below.
+      </p>
+
       <h2>Who we are</h2>
       <p>
-        {site.legalName} is the data controller for this website. You can reach
-        us at <a href={`mailto:${site.email}`}>{site.email}</a>.
+        {site.legalName} is the data controller for this website. Reach us at
+        <a href={`mailto:${site.email}`}>{site.email}</a> about anything on this
+        page.
       </p>
 
       <h2>What we collect</h2>
       <p>
-        Only what you type into the contact form: your name, your email address,
-        the business or site you are enquiring about, the type of site you
-        select, and anything you write in the message box. Nothing else on this
-        website collects information about you.
+        <strong>What you send us.</strong> The contact form asks for your name,
+        your email address, the business or site you are enquiring about, the
+        type of site you select from the list, and anything you write in the
+        message box. Nothing is pre-filled and nothing is taken without you
+        typing it.
+      </p>
+      <p>
+        <strong>What the server sees.</strong> Like any website, ours sits behind
+        a host that records the IP address and browser of anyone who visits, as
+        part of keeping the site up and blocking abuse. We do not use those
+        records to identify visitors and we do not combine them with anything
+        else.
       </p>
 
       <h2>Why we collect it, and our lawful basis</h2>
       <p>
-        To reply to your enquiry and, if it goes any further, to arrange a site
-        visit and quote. Our lawful basis under UK GDPR is legitimate interests
-        &mdash; responding to someone who has deliberately contacted us about our
-        services. We do not use your details for marketing unless you ask us to.
+        To reply to your enquiry and, if it goes further, to arrange a site visit
+        and put a quote to you. Our lawful basis under UK GDPR is legitimate
+        interests &mdash; answering someone who has deliberately contacted us
+        about our services. We do not add you to a mailing list, and we do not
+        use your details for marketing unless you ask us to.
       </p>
 
-      <h2>Who else sees it</h2>
+      <h2>Who else handles it</h2>
       <p>
-        Form submissions reach us by email through a third-party email provider,
-        and this site is hosted on a content delivery network. Both handle the
-        submission in transit as processors on our instructions. Neither uses it
-        for their own purposes, and we do not sell or rent your details to
-        anybody.
+        Two companies process data on our instructions, and only on our
+        instructions:
+      </p>
+      <ul class="legal__list">
+        <li>
+          <strong>Cloudflare</strong> hosts this website and delivers it to your
+          browser.
+        </li>
+        <li>
+          <strong>Resend</strong> delivers contact form submissions to our inbox
+          as email.
+        </li>
+      </ul>
+      <p>
+        Both are based in the United States, so your enquiry leaves the UK when
+        it reaches them. Both operate under transfer safeguards permitted by UK
+        data protection law. We do not sell, rent, or share your details with
+        anybody else.
       </p>
 
       <h2>Cookies and tracking</h2>
       <p>
-        This site sets no cookies and runs no analytics or advertising trackers.
-        If that changes, this page gets updated first.
+        This site sets no cookies. It runs no analytics, no advertising pixels,
+        no session recording, and no third-party embeds. There is nothing here
+        to consent to, which is why you have not been asked. If that ever
+        changes, this page changes first and you will be asked properly.
       </p>
 
       <h2>How long we keep it</h2>
       <p>
-        Enquiries stay in our email for as long as the conversation is useful to
-        either of us. Ask and we will delete yours.
+        Enquiries stay in our email for up to 24 months, so we can pick up a
+        conversation that went quiet. After that they are deleted. If you want
+        yours deleted sooner, ask and we will do it.
       </p>
 
       <h2>Your rights</h2>
       <p>
         Under UK data protection law you can ask us for a copy of what we hold
-        about you, ask us to correct it or delete it, or object to how we are
-        using it. Email us and we will deal with it directly.
+        about you, ask us to correct it, ask us to delete it, or object to how we
+        are using it. Email us and we will deal with it directly &mdash; within a
+        month, and usually a lot sooner.
       </p>
       <p>
-        If you are not happy with how we have handled it, you can complain to the
+        We make no automated decisions about you and do no profiling.
+      </p>
+      <p>
+        If you are not happy with how we have handled something, tell us first
+        and we will try to sort it. You also have the right to complain to the
         Information Commissioner&rsquo;s Office at
         <a href="https://ico.org.uk" rel="noopener">ico.org.uk</a> or on
         0303 123 1113.
@@ -80,7 +118,20 @@ const updated = 'August 2026';
 <style>
   .legal .wrap { max-width: 68ch; }
   .legal h1 { max-width: 16ch; margin-block: var(--sp-2) 0.5rem; }
-  .legal__meta { color: var(--muted); font-size: 0.9375rem; margin-bottom: var(--sp-5); }
+  .legal__meta { color: var(--muted); font-size: 0.9375rem; }
+  .legal__lede {
+    margin-top: var(--sp-4);
+    padding: var(--sp-3) var(--sp-4);
+    background: var(--blue-tint);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+  }
   .legal h2 { font-size: var(--step-3); margin-top: var(--sp-5); margin-bottom: var(--sp-2); }
   .legal p { color: var(--muted); }
+  .legal p strong { color: var(--ink); font-weight: 600; }
+  .legal__list { margin: var(--sp-2) 0 0; padding-left: 1.25rem; color: var(--muted); }
+  .legal__list li { margin-bottom: 0.5rem; }
+  .legal__list strong { color: var(--ink); font-weight: 600; }
 </style>
