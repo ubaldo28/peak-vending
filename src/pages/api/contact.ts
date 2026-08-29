@@ -8,6 +8,8 @@ interface Env {
   RESEND_API_KEY?: string;
   CONTACT_TO?: string;
   CONTACT_FROM?: string;
+  /** Friendly address the acknowledgement to the enquirer comes from. Falls back to CONTACT_FROM. */
+  CONTACT_ACK_FROM?: string;
   /** Override only for testing or a self-hosted Resend-compatible endpoint. */
   RESEND_ENDPOINT?: string;
   /** Optional KV binding. Rate limiting turns itself on when it exists. */
@@ -30,6 +32,7 @@ async function readEnv(): Promise<Env> {
     RESEND_API_KEY: runtime.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY,
     CONTACT_TO: runtime.CONTACT_TO ?? import.meta.env.CONTACT_TO,
     CONTACT_FROM: runtime.CONTACT_FROM ?? import.meta.env.CONTACT_FROM,
+    CONTACT_ACK_FROM: runtime.CONTACT_ACK_FROM ?? import.meta.env.CONTACT_ACK_FROM,
     RESEND_ENDPOINT: runtime.RESEND_ENDPOINT ?? import.meta.env.RESEND_ENDPOINT,
     RATE_LIMIT: runtime.RATE_LIMIT,
   };
@@ -164,7 +167,13 @@ async function sendEmail(env: Env, d: Fields) {
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
 
                 <tr>
-                  <td style="padding:28px 32px 0">
+                  <td style="padding:0;font-size:0;line-height:0">
+                    <img src="https://peak-vending.com/email-band.png" width="598" height="110" alt="" style="display:block;border:0;width:100%;max-width:598px;height:auto;border-radius:7px 7px 0 0">
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style="padding:26px 32px 0">
                     <div style="font-family:${SANS};font-size:12px;line-height:16px;letter-spacing:.11em;text-transform:uppercase;color:${BLUE};font-weight:700">New enquiry</div>
                     <div style="font-family:${SANS};font-size:24px;line-height:32px;color:${INK};font-weight:700;padding-top:6px">${escapeHtml(
                       d.business ?? 'A new site',
@@ -252,6 +261,123 @@ ${messageBlock}
   return { ok: true as const };
 }
 
+/**
+ * Acknowledgement to the person who filled the form. Best-effort: if this
+ * fails the enquiry has still reached the inbox, which is the part that
+ * matters, so the caller ignores the result.
+ */
+async function sendAck(env: Env, d: Fields) {
+  const from = env.CONTACT_ACK_FROM || env.CONTACT_FROM;
+  if (!env.RESEND_API_KEY || !from || !d.email) return;
+
+  const PAPER = '#F1F3EF';
+  const CARD = '#FFFFFF';
+  const INK = '#2E322D';
+  const MUTED = '#6B7169';
+  const LINE = '#E2E5DE';
+  const BLUE = '#1C72AF';
+  const SANS =
+    "'Helvetica Neue',Helvetica,Arial,'Segoe UI',Roboto,sans-serif";
+
+  const firstName = (d.name ?? '').trim().split(/\s+/)[0] || 'there';
+  const steps = [
+    ['We read it properly', 'Not an auto-sorted queue. A person looks at where you are and what you have asked for.'],
+    ['We come and have a look', 'Free, no obligation. We check the space, the power, and where folk actually walk.'],
+    ['You get it in writing', 'Machine, range and prices, agreed before anything is ordered.'],
+  ];
+
+  const html = `<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Thanks for getting in touch</title></head>
+<body style="margin:0;padding:0;background:${PAPER};-webkit-text-size-adjust:100%">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0">We have got your enquiry and will come back to you shortly.</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${PAPER}">
+    <tr><td align="center" style="padding:32px 16px">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:100%">
+
+        <tr><td align="center" style="padding:0 0 24px">
+          <img src="https://peak-vending.com/email-logo.png" width="220" height="115" alt="Peak Vending" style="display:block;border:0;width:220px;height:auto">
+        </td></tr>
+
+        <tr><td style="background:${CARD};border:1px solid ${LINE};border-radius:8px">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+
+            <tr><td style="padding:32px 32px 0">
+              <div style="font-family:${SANS};font-size:24px;line-height:32px;color:${INK};font-weight:700">Thanks, ${escapeHtml(firstName)} — we have got it.</div>
+              <div style="font-family:${SANS};font-size:16px;line-height:26px;color:${MUTED};padding-top:12px">
+                Your enquiry about ${escapeHtml(d.business || 'your site')} has come through. We will come back to you shortly, usually the same working day.
+              </div>
+            </td></tr>
+
+            <tr><td style="padding:24px 32px 0">
+              <div style="font-family:${SANS};font-size:12px;line-height:16px;letter-spacing:.11em;text-transform:uppercase;color:${BLUE};font-weight:700;padding-bottom:12px">What happens next</div>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                ${steps
+                  .map(
+                    ([t, b], i) => `
+                <tr>
+                  <td width="34" style="padding:0 0 ${i === steps.length - 1 ? '0' : '16'}px;font-family:${SANS};font-size:13px;line-height:22px;font-weight:700;color:${BLUE};vertical-align:top">${String(i + 1).padStart(2, '0')}</td>
+                  <td style="padding:0 0 ${i === steps.length - 1 ? '0' : '16'}px;vertical-align:top">
+                    <div style="font-family:${SANS};font-size:16px;line-height:22px;color:${INK};font-weight:600">${t}</div>
+                    <div style="font-family:${SANS};font-size:15px;line-height:23px;color:${MUTED};padding-top:3px">${b}</div>
+                  </td>
+                </tr>`,
+                  )
+                  .join('')}
+              </table>
+            </td></tr>
+
+            <tr><td style="padding:26px 32px 30px">
+              <div style="font-family:${SANS};font-size:15px;line-height:23px;color:${MUTED};border-top:1px solid ${LINE};padding-top:18px">
+                Remembered something you meant to say? Just reply to this email — it comes straight to us.
+              </div>
+            </td></tr>
+
+          </table>
+        </td></tr>
+
+        <tr><td align="center" style="padding:20px 8px 0;font-family:${SANS};font-size:13px;line-height:20px;color:${MUTED}">
+          <a href="https://peak-vending.com" style="color:${BLUE};text-decoration:none">peak-vending.com</a><br>
+          Full-service vending across Dundee, Angus, Fife and Perthshire
+        </td></tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+  const text = [
+    `Thanks, ${firstName} - we have got it.`,
+    '',
+    `Your enquiry about ${d.business || 'your site'} has come through. We will come back to you shortly, usually the same working day.`,
+    '',
+    'WHAT HAPPENS NEXT',
+    ...steps.map(([t, b], i) => `${String(i + 1).padStart(2, '0')}  ${t} - ${b}`),
+    '',
+    'Remembered something you meant to say? Just reply to this email.',
+    '',
+    'peak-vending.com',
+  ].join('\n');
+
+  const endpoint = env.RESEND_ENDPOINT || 'https://api.resend.com/emails';
+  await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from,
+      to: [d.email],
+      ...(env.CONTACT_TO ? { reply_to: env.CONTACT_TO } : {}),
+      subject: 'Thanks — we have got your vending enquiry',
+      html,
+      text,
+    }),
+  });
+}
+
 export async function POST(ctx: APIContext): Promise<Response> {
   const env = await readEnv();
   const contentType = ctx.request.headers.get('content-type') ?? '';
@@ -320,6 +446,14 @@ export async function POST(ctx: APIContext): Promise<Response> {
       ok: false,
       message: 'We could not send that just now. Try again, or give us a ring.',
     });
+  }
+
+  // The enquiry is safely in the inbox by this point. The acknowledgement to
+  // the sender is a nicety — never let it fail the request.
+  try {
+    await sendAck(env, data);
+  } catch (err) {
+    console.warn('[contact] Acknowledgement to the enquirer failed:', err);
   }
 
   return reply(200, { ok: true, message: 'Cheers — we will be in touch shortly.' }, '/thanks/');
