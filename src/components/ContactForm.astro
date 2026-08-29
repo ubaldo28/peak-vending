@@ -28,13 +28,13 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
   <div class="form__row">
     <label for={`${id}-name`}>Your name</label>
     <input id={`${id}-name`} name="name" type="text" autocomplete="name" required placeholder="First and last" />
-    <p class="form__err" data-err="name"></p>
+    <p class="form__err" id={`${id}-name-err`} data-err="name"></p>
   </div>
 
   <div class="form__row">
     <label for={`${id}-business`}>Business or site</label>
     <input id={`${id}-business`} name="business" type="text" autocomplete="organization" required placeholder="Tayside Logistics Ltd" />
-    <p class="form__err" data-err="business"></p>
+    <p class="form__err" id={`${id}-business-err`} data-err="business"></p>
   </div>
 
   <div class="form__row">
@@ -50,7 +50,7 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
   <div class="form__row">
     <label for={`${id}-email`}>Email</label>
     <input id={`${id}-email`} name="email" type="email" autocomplete="email" required placeholder="you@yourbusiness.co.uk" />
-    <p class="form__err" data-err="email"></p>
+    <p class="form__err" id={`${id}-email-err`} data-err="email"></p>
   </div>
 
   {variant === 'page' && (
@@ -128,7 +128,7 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
     border-radius: var(--radius);
     padding: var(--sp-4);
   }
-  .form--panel label { color: #a9cde8; }
+  .form--panel label { color: #BDE1FC; }
   .form--panel input,
   .form--panel select {
     background: rgba(0, 0, 0, 0.18);
@@ -144,6 +144,13 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
 </style>
 
 <script>
+  /** What /api/contact sends back. Mirrors the reply() shape in that file. */
+  interface ContactReply {
+    ok?: boolean;
+    message?: string;
+    errors?: Record<string, string>;
+  }
+
   document.querySelectorAll<HTMLFormElement>('form.form').forEach((form) => {
     // Stamp load time so the server can reject instant submissions.
     const stamp = form.querySelector<HTMLInputElement>('[data-stamp]');
@@ -158,7 +165,10 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
         el.textContent = '';
         el.classList.remove('is-shown');
       });
-      form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+      form.querySelectorAll('[aria-invalid]').forEach((el) => {
+        el.removeAttribute('aria-invalid');
+        el.removeAttribute('aria-describedby');
+      });
     };
 
     const showErrors = (errors: Record<string, string>) => {
@@ -170,6 +180,8 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
           slot.classList.add('is-shown');
         }
         input?.setAttribute('aria-invalid', 'true');
+        // Without this a screen reader announces "invalid" but never says why.
+        if (slot?.id) input?.setAttribute('aria-describedby', slot.id);
       });
       form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
     };
@@ -200,7 +212,7 @@ const locations = (await getCollection('locations')).sort((a, b) => a.data.order
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify(payload),
         });
-        const body = await res.json().catch(() => ({}));
+        const body = (await res.json().catch(() => ({}))) as ContactReply;
 
         if (res.ok && body.ok) {
           form.reset();

@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import { site } from '../data/site.ts';
+import { site } from '../data/site';
 
 // Describes exactly what the site does today: one contact form, no cookies,
 // no analytics. Update it the moment you add analytics, an ad pixel, a chat
@@ -119,14 +119,16 @@ const updated = '29 August 2026';
   .legal .wrap { max-width: 68ch; }
   .legal h1 { max-width: 16ch; margin-block: var(--sp-2) 0.5rem; }
   .legal__meta { color: var(--muted); font-size: 0.9375rem; }
-  .legal__lede {
+  .legal p.legal__lede {
     margin-top: var(--sp-4);
     padding: var(--sp-3) var(--sp-4);
     background: var(--blue-tint);
     border-left: 3px solid var(--blue);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     font-size: var(--step-1);
-    color: var(--ink-soft);
+    /* Needs `p` in the selector to outrank `.legal p` below. Not var(--muted)
+       either: that tone fails contrast against this tinted panel. */
+    color: #676D65;
   }
   .legal h2 { font-size: var(--step-3); margin-top: var(--sp-5); margin-bottom: var(--sp-2); }
   .legal p { color: var(--muted); }

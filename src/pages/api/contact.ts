@@ -43,8 +43,19 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 type Fields = Record<string, string>;
 
-function clean(value: unknown, limit: number): string {
-  return typeof value === 'string' ? value.trim().slice(0, limit) : '';
+/**
+ * Control characters are stripped before anything else happens to a field.
+ * The subject line and the From/Reply-To addresses are built from this data,
+ * and a stray CR or LF in any of them is the classic header-injection route
+ * into someone else's mailbox. `keepNewlines` is only for the message body,
+ * which is rendered into HTML (escaped) rather than into a header.
+ */
+function clean(value: unknown, limit: number, keepNewlines = false): string {
+  if (typeof value !== 'string') return '';
+  const stripped = keepNewlines
+    ? value.replace(/\r\n?/g, '\n').replace(/[^\S\n]*[\u0000-\u0009\u000B-\u001F\u007F]+/g, ' ')
+    : value.replace(/[\u0000-\u001F\u007F]+/g, ' ');
+  return stripped.trim().slice(0, limit);
 }
 
 function validate(raw: Fields) {
@@ -53,7 +64,7 @@ function validate(raw: Fields) {
     email: clean(raw.email, MAX.email),
     business: clean(raw.business, MAX.business),
     locationType: clean(raw.locationType, MAX.locationType),
-    message: clean(raw.message, MAX.message),
+    message: clean(raw.message, MAX.message, true),
   };
 
   const errors: Record<string, string> = {};
@@ -378,7 +389,37 @@ async function sendAck(env: Env, d: Fields) {
   });
 }
 
+/**
+ * A JSON POST from another origin is stopped by CORS preflight, but a plain
+ * form POST is a "simple request" and sails straight through — that is CSRF,
+ * and here it would mean a stranger's site firing enquiries into the client's
+ * inbox. Same-origin requests carry Origin (or at least Referer) matching the
+ * host, so anything that disagrees is refused. A request with neither header
+ * is allowed: that is curl or an old client, not a browser being used as a
+ * weapon against someone.
+ */
+function sameOrigin(request: Request): boolean {
+  const host = request.headers.get('host');
+  if (!host) return true;
+
+  const stated = request.headers.get('origin') ?? request.headers.get('referer');
+  if (!stated) return true;
+
+  try {
+    return new URL(stated).host === host;
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(ctx: APIContext): Promise<Response> {
+  if (!sameOrigin(ctx.request)) {
+    return new Response(JSON.stringify({ ok: false, message: 'Bad request.' }), {
+      status: 403,
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+
   const env = await readEnv();
   const contentType = ctx.request.headers.get('content-type') ?? '';
   const wantsJson = contentType.includes('application/json');

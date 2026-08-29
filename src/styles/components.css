@@ -163,7 +163,7 @@
   --pv-blue: #7fc0ee;
   --pv-dark: #ffffff;
 }
-.cta .eyebrow { color: #8cc5ec; }
+.cta .eyebrow { color: #99D2F9; }
 .cta h2 { margin-bottom: var(--sp-2); }
 .cta p { color: #c6def1; font-size: var(--step-1); }
 .cta .wrap { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--sp-5); align-items: center; }

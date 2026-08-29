@@ -5,7 +5,7 @@ import Machine from '../components/Machine.astro';
 import Icon from '../components/Icon.astro';
 import Sponsors from '../components/Sponsors.astro';
 import ContactForm from '../components/ContactForm.astro';
-import { site, proofPoints } from '../data/site.ts';
+import { site, proofPoints } from '../data/site';
 
 const services = (await getCollection('services'))
   .filter((s) => s.data.featured)

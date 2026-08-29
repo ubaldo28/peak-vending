@@ -42,7 +42,7 @@ const sponsors = defineCollection({
     name: z.string(),
     /** Path under /public, e.g. /sponsors/acme.svg */
     logo: z.string(),
-    url: z.string().url().optional(),
+    url: z.url().optional(),
     /** 'strip' shows in the thin band; 'feature' also gets a card. */
     tier: z.enum(['strip', 'feature']).default('strip'),
     blurb: z.string().optional(),

@@ -1,6 +1,6 @@
 ---
 import Logo from './Logo.astro';
-import { site } from '../data/site.ts';
+import { site } from '../data/site';
 import { getCollection } from 'astro:content';
 
 const locations = (await getCollection('locations')).sort(
@@ -14,7 +14,7 @@ const socials = Object.entries(site.social).filter(([, url]) => url);
   <div class="wrap foot__grid">
     <div>
       <a href="/" aria-label="Peak Vending — home">
-        <Logo variant="full" width="158px" class="foot__logo" decorative />
+        <Logo variant="full" width={158} class="foot__logo" decorative />
       </a>
       <p class="foot__blurb">
         Full-service snack and drink vending across Dundee, Angus, Fife and
@@ -79,14 +79,14 @@ const socials = Object.entries(site.social).filter(([, url]) => url);
     gap: var(--sp-5);
   }
   .foot__logo { margin-bottom: 0.9rem; }
-  .foot__blurb { font-size: 0.96875rem; color: #8c9189; max-width: 34ch; }
+  .foot__blurb { font-size: 0.96875rem; color: #A1A69E; max-width: 34ch; }
   .foot__head {
     font-family: var(--font-display);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.17em;
     text-transform: uppercase;
-    color: #8c9189;
+    color: #A1A69E;
     margin-bottom: 0.8rem;
   }
   .foot__list {
@@ -99,7 +99,7 @@ const socials = Object.entries(site.social).filter(([, url]) => url);
   }
   .foot__list a { color: #c8ccc5; text-decoration: none; }
   .foot__list a:hover { color: #fff; text-decoration: underline; }
-  .foot__plain { color: #8c9189; }
+  .foot__plain { color: #A1A69E; }
   .foot__social {
     margin: var(--sp-3) 0 0;
     padding: 0;
@@ -109,19 +109,19 @@ const socials = Object.entries(site.social).filter(([, url]) => url);
     font-size: 0.90625rem;
     text-transform: capitalize;
   }
-  .foot__social a { color: #8c9189; }
+  .foot__social a { color: #A1A69E; }
   .foot__bottom {
     border-top: 1px solid #43473f;
     margin-top: var(--sp-5);
     padding-top: 1.25rem;
     font-size: 0.875rem;
-    color: #7e837b;
+    color: #979C94;
     display: flex;
     justify-content: space-between;
     gap: 1rem;
     flex-wrap: wrap;
   }
-  .foot__bottom a { color: #7e837b; }
+  .foot__bottom a { color: #979C94; }
 
   @media (max-width: 900px) {
     .foot__grid { grid-template-columns: 1fr 1fr; }

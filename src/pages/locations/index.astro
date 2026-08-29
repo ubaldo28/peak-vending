@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
-import { site } from '../../data/site.ts';
+import { site } from '../../data/site';
 
 const locations = (await getCollection('locations')).sort((a, b) => a.data.order - b.data.order);
 ---

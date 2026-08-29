@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/security-headers.mjs",
     "preview": "wrangler dev",
-    "deploy": "astro build && wrangler deploy --config dist/server/wrangler.json",
+    "deploy": "npm run build && wrangler deploy --config dist/server/wrangler.json",
     "check": "astro check",
-    "astro": "astro"
+    "astro": "astro",
+    "audit:a11y": "node scripts/audit-a11y.mjs"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +23,12 @@
     "astro": "^7.2.8"
   },
   "devDependencies": {
-    "wrangler": "^4.126.0"
+    "@astrojs/check": "^0.9.10",
+    "@cloudflare/workers-types": "^5.20260829.1",
+    "axe-core": "^4.13.0",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.126.0",
+    "playwright": "^1.48.0"
   },
   "private": true,
   "type": "module"

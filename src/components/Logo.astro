@@ -2,14 +2,14 @@
 interface Props {
   /** 'full' is the stacked lockup, 'mark' is the mountain on its own. */
   variant?: 'full' | 'mark';
-  /** CSS width, e.g. '132px'. Height follows the aspect ratio. */
-  width?: string;
+  /** Rendered width in px. Height follows the aspect ratio via CSS. */
+  width?: number;
   class?: string;
   /** Set on the decorative copies so screen readers hear the name once. */
   decorative?: boolean;
 }
 
-const { variant = 'full', width = '132px', class: className = '', decorative = false } = Astro.props;
+const { variant = 'full', width = 132, class: className = '', decorative = false } = Astro.props;
 
 const isFull = variant === 'full';
 const viewBox = isFull ? '0 0 1882 978' : '0 0 1211 700';
@@ -19,7 +19,7 @@ const href = isFull ? '#pvFull' : '#pvMark';
 <svg
   class:list={['logo', className]}
   viewBox={viewBox}
-  style={`width:${width}`}
+  width={width}
   role={decorative ? 'presentation' : 'img'}
   aria-hidden={decorative ? 'true' : undefined}
   aria-label={decorative ? undefined : 'Peak Vending'}

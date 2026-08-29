@@ -122,3 +122,10 @@ a:hover { color: var(--blue-deep); }
   .reveal, .reveal.is-in { opacity: 1; transform: none; transition: none; }
 }
 .no-js .reveal { opacity: 1; transform: none; }
+
+/* The <symbol> sheet LogoDefs emits. Zero-sized and out of flow so it never
+   affects layout; a class rather than a style attribute so the CSP can ban
+   inline styles outright. */
+.logo-defs {
+  position: absolute;
+}

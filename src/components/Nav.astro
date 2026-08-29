@@ -1,6 +1,6 @@
 ---
 import Logo from './Logo.astro';
-import { nav } from '../data/site.ts';
+import { nav } from '../data/site';
 
 const path = Astro.url.pathname;
 const isCurrent = (href: string) => path === href || (href !== '/' && path.startsWith(href));
@@ -9,7 +9,7 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 <header class="nav">
   <div class="wrap nav__in">
     <a href="/" class="nav__logo" aria-label="Peak Vending — home">
-      <Logo variant="full" width="132px" decorative />
+      <Logo variant="full" width={132} decorative />
     </a>
 
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu">

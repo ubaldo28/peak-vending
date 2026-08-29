@@ -17,15 +17,13 @@
   "routes": [
     { "pattern": "peak-vending.com", "custom_domain": true },
     { "pattern": "www.peak-vending.com", "custom_domain": true }
-  ]
+  ],
 
-  // --- Optional: contact-form rate limiting ---------------------------------
-  // Create the namespace once:
-  //     npx wrangler kv namespace create RATE_LIMIT
-  // then paste the id below and uncomment. The endpoint detects the binding
-  // and turns rate limiting on by itself; without it, everything still works.
-  //
-  // "kv_namespaces": [
-  //   { "binding": "RATE_LIMIT", "id": "paste-the-id-here" }
-  // ]
+  // Contact-form rate limiting: 5 submissions per IP per hour. The endpoint
+  // looks for this binding and enables the limit when it finds one, so a fork
+  // without the namespace still runs — it just does not rate limit.
+  // Recreate with: npx wrangler kv namespace create RATE_LIMIT
+  "kv_namespaces": [
+    { "binding": "RATE_LIMIT", "id": "344ae7da8b404b9ea0f95ccc797df945" }
+  ]
 }
