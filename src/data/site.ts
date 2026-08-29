@@ -10,7 +10,7 @@ export const site = {
   tagline: 'Full-service vending',
 
   // --- CONTACT -------------------------------------------------------------
-  email: 'hello@peak-vending.com',
+  email: 'info@peak-vending.com',
   // Leave these empty and the phone disappears from the nav, footer, contact
   // page, thanks page and the structured data. Fill them in to bring it back.
   phone: '',
