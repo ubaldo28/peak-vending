@@ -7,6 +7,8 @@ Astro, static output, Cloudflare Workers. Sixteen pages of HTML on a CDN and one
 server-rendered route. No client framework, no CSS framework, no analytics, no
 cookies. Built and shipped solo, client work rather than a tutorial project.
 
+![Peak Vending — desktop and mobile](public/screenshot.png)
+
 ```bash
 npm ci && npm run check && npm run build && npm run audit:a11y
 ```
