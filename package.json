@@ -1,7 +1,7 @@
 {
   "name": "peak-vending",
   "version": "1.0.0",
-  "description": "Peak Vending marketing site \u2014 Astro, deployed to Cloudflare Workers.",
+  "description": "Peak Vending marketing site — Astro, deployed to Cloudflare Workers.",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -26,9 +26,9 @@
     "@astrojs/check": "^0.9.10",
     "@cloudflare/workers-types": "^5.20260829.1",
     "axe-core": "^4.13.0",
+    "playwright": "^1.62.1",
     "typescript": "^6.0.3",
-    "wrangler": "^4.126.0",
-    "playwright": "^1.48.0"
+    "wrangler": "^4.126.0"
   },
   "private": true,
   "type": "module"

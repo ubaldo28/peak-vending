@@ -70,7 +70,19 @@ async function routes(dir = ROOT) {
 const server = await serve();
 const axe = await readFile(new URL('../node_modules/axe-core/axe.min.js', import.meta.url), 'utf8');
 const paths = await routes();
-const browser = await chromium.launch();
+
+let browser;
+try {
+  browser = await chromium.launch();
+} catch (err) {
+  server.close();
+  console.error(
+    'Could not launch Chromium. Run `npx playwright install chromium` first.\n' +
+      `Underlying error: ${err.message.split('\n')[0]}`,
+  );
+  process.exit(1);
+}
+
 const failures = [];
 
 // --- axe-core, every page, two widths -------------------------------------

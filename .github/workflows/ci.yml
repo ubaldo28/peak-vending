@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Read-only. Nothing here deploys; deployment is a deliberate local step.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Types, build, accessibility
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type-check
+        run: npm run check
+
+      # Also regenerates dist/client/_headers. The generator exits non-zero if
+      # an un-hashable inline style attribute has crept in, so a change that
+      # would have forced 'unsafe-inline' into the CSP fails here instead of
+      # silently weakening the deployed policy.
+      - name: Build
+        run: npm run build
+
+      - name: Install Chromium for the accessibility audit
+        run: npx playwright install --with-deps chromium
+
+      - name: Accessibility audit
+        run: npm run audit:a11y
+
+      - name: Confirm the CSP carries no unsafe-inline
+        run: |
+          if grep -q "unsafe-inline" dist/client/_headers; then
+            echo "::error::CSP contains unsafe-inline"
+            exit 1
+          fi
+          echo "CSP is clean."
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=moderate
