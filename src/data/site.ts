@@ -53,8 +53,8 @@ export const nav = [
 
 /** Short trust points shown in the strip under the homepage hero. */
 export const proofPoints = [
-  { title: 'Nothing for you to pay', body: 'Machines, delivery and stocking are on us' },
-  { title: 'Contactless as standard', body: 'Card and phone on every machine' },
-  { title: 'Filled on a set run', body: 'A regular visit, not when you chase us' },
-  { title: 'One number to ring', body: 'The same folk every time' },
+  { title: 'No cost to you or your business', body: 'Machines, delivery and stocking are all taken care of by us' },
+  { title: 'Contactless as standard', body: 'Card and phone payment option available on every machine' },
+  { title: 'Live sales reporting', body: 'We monitor sales and return when your favourite products are running low' },
+  { title: 'One direct number to call', body: 'Getting in touch made simple' },
 ] as const;
